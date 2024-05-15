@@ -1,0 +1,30 @@
+@import './base.css';
+
+#app {
+  font-weight: normal;
+}
+
+a {
+  text-decoration: none;
+  color: hsla(var(--primary-800) / 1);
+  font-weight: bold;
+  transition: 0.4s;
+
+  &:hover {
+    color: hsla(var(--primary-600) / 1);
+  }
+}
+
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+hr {
+  width: calc(100% - 2rem);
+  margin: 1rem auto;
+  max-width: 1280px;
+  border: 0;
+  border-top: 1px solid hsla(var(--text-300) / 1);
+}
