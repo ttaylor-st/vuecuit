@@ -4,6 +4,20 @@ import ProfileIcon from './icons/IconProfile.vue'
 import HomeIcon from './icons/IconHome.vue'
 import IconCollections from '@/components/icons/IconCollections.vue'
 import IconNotifications from '@/components/icons/IconNotifications.vue'
+
+import { useUrlStore } from '@/stores/urlStore'
+import { useUserStore } from '@/stores/userStore'
+import { ref } from 'vue'
+
+const urlStore = useUrlStore()
+const userStore = useUserStore()
+
+const profilePicture = ref('')
+
+if (userStore.user) {
+  profilePicture.value = `${urlStore.url}/${userStore.user.proPic.url}`
+}
+
 </script>
 
 <template>
@@ -17,8 +31,9 @@ import IconNotifications from '@/components/icons/IconNotifications.vue'
     <router-link to="/collections">
       <IconCollections />
     </router-link>
-    <router-link to="/about">
-      <ProfileIcon />
+    <router-link to="/profile">
+      <img v-if="userStore.user" :src="profilePicture" alt="Profile Picture" />
+      <ProfileIcon v-else />
     </router-link>
   </nav>
 </template>
@@ -65,6 +80,12 @@ import IconNotifications from '@/components/icons/IconNotifications.vue'
     justify-content: center;
 
     transition: 0.3s;
+
+    img {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+    }
 
     &::before {
       content: '';
