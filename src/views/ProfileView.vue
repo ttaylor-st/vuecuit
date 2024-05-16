@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
+import { useRoute } from 'vue-router'
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()
+const route = useRoute()
 
 // TODO: Fully define user information.
 const user = ref({
@@ -19,11 +21,19 @@ const user = ref({
 const joinTime = ref('')
 const pronouns = ref([])
 
-onMounted(() => {
-  user.value = userStore.user
-  joinTime.value = new Date(userStore.user.createdAt).toLocaleDateString()
-  // pronouns.value = userStore.user.aboutMe.match(/(she|he|they)\/(her|him|them)/g) || []
-})
+
+const username = route.params.username
+const profilePicture = ref('')
+
+const fetchedUser = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username}`)
+const fetchedUserBody = await fetchedUser.json()
+user.value = fetchedUserBody
+joinTime.value = new Date(fetchedUserBody.createdAt).toLocaleDateString()
+// pronouns.value = userStore.user.aboutMe.match(/(she|he|they)\/(her|him|them)/g) || []
+
+if (fetchedUserBody.proPic === null) profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${fetchedUserBody.username}`
+else profilePicture.value = `${urlStore.url}/${fetchedUserBody.proPic.url}`
+
 </script>
 
 <template>
@@ -32,7 +42,7 @@ onMounted(() => {
       <div class="profile">
         <div class="profile__header">
           <div class="profile__avatar">
-            <img :src="urlStore.url + user.proPic.url" alt="Profile Picture" />
+            <img :src="profilePicture" alt="Profile Picture" />
           </div>
           <div class="profile__user">
             <h1>{{ user.username }}</h1>
@@ -95,7 +105,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
 .profile {
   display: flex;
   flex-direction: column;
