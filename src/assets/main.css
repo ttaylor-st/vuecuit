@@ -16,9 +16,20 @@ a {
 }
 
 main {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 1rem;
+  width: calc(100% - 2rem);
+  max-width: 768px;
+  margin: 1rem auto;
+
+  section {
+    width: 100%;
+    padding: 1rem;
+    background: hsla(var(--background-100) / 1);
+    border-radius: 0.5rem;
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
 }
 
 hr {

@@ -135,7 +135,6 @@
 }
 
 body {
-  min-height: 100vh;
   color: hsla(var(--text-950) / 1);
   background: hsla(var(--background-50) / 1);
   transition:
