@@ -37,7 +37,6 @@ function timeSince(postCreatedAt: Date): string {
   return 'Just now'
 }
 
-
 const publicId = ref(props.publicId)
 
 const post = await userStore
@@ -47,22 +46,23 @@ const post = await userStore
 const timeElapsedHuman = timeSince(post.createdAt)
 const humanReadableDate = new Date(post.createdAt).toLocaleString()
 
+const author = post.author;
+const profilePicture = ref('')
+if (author.proPic === null) profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${author.username}`
+else profilePicture.value = `${urlStore.url}/${author.proPic.url}`
 
 </script>
 
 <template>
-
-  <div class="post" >
-
-
+  <div class="post">
     <div class="post-header">
       <RouterLink class="post-header__community" to="/">
         <img :src="`${urlStore.url}/${post.community.proPic.url}`" alt="community image" />
         <span>{{ post.community.name }}</span>
       </RouterLink>
 
-      <RouterLink class="post-header__user" to="/">
-        <img :src="`${urlStore.url}/${post.author.proPic.url}`" alt="user image" />
+      <RouterLink class="post-header__user" :to="`/profile/${post.author.username}`">
+        <img :src="profilePicture" alt="user image" />
         <span>{{ post.author.username }}</span>
       </RouterLink>
 
@@ -93,8 +93,8 @@ const humanReadableDate = new Date(post.createdAt).toLocaleString()
   font-size: 0.8rem;
   border-bottom: 1px solid hsla(var(--primary-600), 0.5);
 
-
-  .post-header__community, .post-header__user {
+  .post-header__community,
+  .post-header__user {
     display: flex;
     gap: 0.5rem;
     align-items: center;
@@ -129,7 +129,6 @@ const humanReadableDate = new Date(post.createdAt).toLocaleString()
       background-color: hsl(var(--primary-200) / 0.9);
       border: 1px solid hsla(var(--primary-500) / 0.5);
     }
-
   }
 }
 

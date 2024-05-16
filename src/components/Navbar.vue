@@ -15,9 +15,9 @@ const userStore = useUserStore()
 const profilePicture = ref('')
 
 if (userStore.user) {
-  profilePicture.value = `${urlStore.url}/${userStore.user.proPic.url}`
+  if (userStore.user.proPic.url === null) profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${userStore.user.username}`
+  else profilePicture.value = `${urlStore.url}/${userStore.user.proPic.url}`
 }
-
 </script>
 
 <template>
@@ -31,7 +31,7 @@ if (userStore.user) {
     <router-link to="/collections">
       <IconCollections />
     </router-link>
-    <router-link to="/profile">
+    <router-link :to="userStore.user ? `/profile/${userStore.user.username}` : '/login'">
       <img v-if="userStore.user" :src="profilePicture" alt="Profile Picture" />
       <ProfileIcon v-else />
     </router-link>
@@ -88,6 +88,7 @@ if (userStore.user) {
     }
 
     &::before {
+      z-index: -1;
       content: '';
       position: absolute;
       top: 50%;
@@ -106,6 +107,12 @@ if (userStore.user) {
     }
 
     &.router-link-active {
+
+      img,
+      svg {
+        scale: 1.25;
+      }
+
       animation: activate_icon 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
