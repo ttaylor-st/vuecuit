@@ -30,7 +30,7 @@ const router = createRouter({
       component: () => import('../views/NotificationsView.vue')
     },
     {
-      path: '/profile',
+      path: '/profile/:username',
       name: 'profile',
       meta: { requiresAuth: true },
       component: () => import('../views/ProfileView.vue')
@@ -46,6 +46,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (to.meta?.requiresAuth && !useUserStore().isLoggedIn) next({ name: 'login' })
   else next()
+})
+
+router.afterEach((to, from) => {
+  const toDepth = to.path.split('/').length
+  const fromDepth = from.path.split('/').length
+  to.meta.transition = toDepth < fromDepth ? 'slide-left' : 'slide-right'
 })
 
 export default router

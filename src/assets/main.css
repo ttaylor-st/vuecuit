@@ -2,6 +2,7 @@
 
 #app {
   font-weight: normal;
+  overflow-x: hidden;
 }
 
 a {
@@ -16,6 +17,7 @@ a {
 }
 
 main {
+  min-height: 100vh;
   width: calc(100% - 2rem);
   max-width: 768px;
   margin: 1rem auto;
