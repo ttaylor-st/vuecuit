@@ -9,8 +9,8 @@ In the future, I plan to provide both a PWA and native Android app using [Capaci
 
 ## Get Vuecuit
 
-Vuecuit will, at some point, be deployed to GitHub Pages at
-[ttaylor-st.github.io/vuecuit](https://ttaylor-st.github.io/vuecuit).
+Vuecuit is available on GitHub Pages at
+[ttaylor-st.github.io/vuecuit](https://ttaylor-st.github.io/vuecuit), **but** it is not production ready.
 
 If and when I choose to support Android, I will provide automatically generated builds on the
 [Releases](https://github.com/ttaylor-st/vuecuit/releases) page and on the Google Play Store.
