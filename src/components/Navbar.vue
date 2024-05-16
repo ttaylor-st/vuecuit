@@ -15,7 +15,8 @@ const userStore = useUserStore()
 const profilePicture = ref('')
 
 if (userStore.user) {
-  if (userStore.user.proPic.url === null) profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${userStore.user.username}`
+  if (userStore.user.proPic.url === null)
+    profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${userStore.user.username}`
   else profilePicture.value = `${urlStore.url}/${userStore.user.proPic.url}`
 }
 </script>
@@ -107,7 +108,6 @@ if (userStore.user) {
     }
 
     &.router-link-active {
-
       img,
       svg {
         scale: 1.25;

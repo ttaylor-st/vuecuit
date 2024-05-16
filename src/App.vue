@@ -20,7 +20,6 @@ import Footer from '@/components/Footer.vue'
 </template>
 
 <style scoped>
-
 .slide-left-enter-active,
 .slide-left-leave-active {
   transition: all 0.5s ease;
@@ -44,6 +43,4 @@ import Footer from '@/components/Footer.vue'
   opacity: 0;
   filter: blur(8px) brightness(0.5);
 }
-
-
 </style>

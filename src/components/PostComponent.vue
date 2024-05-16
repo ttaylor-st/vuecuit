@@ -46,11 +46,11 @@ const post = await userStore
 const timeElapsedHuman = timeSince(post.createdAt)
 const humanReadableDate = new Date(post.createdAt).toLocaleString()
 
-const author = post.author;
+const author = post.author
 const profilePicture = ref('')
-if (author.proPic === null) profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${author.username}`
+if (author.proPic === null)
+  profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${author.username}`
 else profilePicture.value = `${urlStore.url}/${author.proPic.url}`
-
 </script>
 
 <template>

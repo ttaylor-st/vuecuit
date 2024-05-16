@@ -21,7 +21,6 @@ const user = ref({
 const joinTime = ref('')
 const pronouns = ref([])
 
-
 const username = route.params.username
 const profilePicture = ref('')
 
@@ -31,9 +30,9 @@ user.value = fetchedUserBody
 joinTime.value = new Date(fetchedUserBody.createdAt).toLocaleDateString()
 // pronouns.value = userStore.user.aboutMe.match(/(she|he|they)\/(her|him|them)/g) || []
 
-if (fetchedUserBody.proPic === null) profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${fetchedUserBody.username}`
+if (fetchedUserBody.proPic === null)
+  profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${fetchedUserBody.username}`
 else profilePicture.value = `${urlStore.url}/${fetchedUserBody.proPic.url}`
-
 </script>
 
 <template>

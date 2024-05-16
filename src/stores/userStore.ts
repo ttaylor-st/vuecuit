@@ -73,8 +73,7 @@ export const useUserStore = defineStore('user', {
         if (response.ok) {
           this.user = null
           localStorage.removeItem('user')
-        }
-        else {
+        } else {
           this.error = await response.text()
         }
       } catch (error) {
