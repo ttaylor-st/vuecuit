@@ -24,6 +24,21 @@ import IconNotifications from '@/components/icons/IconNotifications.vue'
 </template>
 
 <style scoped>
+@keyframes activate_icon {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(20deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(-20deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -61,24 +76,24 @@ import IconNotifications from '@/components/icons/IconNotifications.vue'
       aspect-ratio: 1;
       border-radius: 50%;
       background-color: transparent;
-      filter: blur(2rem);
       transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     &:hover::before {
-      filter: blur(0);
       width: 2.5rem;
       background-color: hsla(var(--primary-800) / 0.25);
     }
 
+    &.router-link-active {
+      animation: activate_icon 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
     &.router-link-active::before {
-      filter: blur(0);
       width: 2.5rem;
       background-color: hsla(var(--primary-800) / 0.5);
     }
 
     &.router-link-active:hover::before {
-      filter: blur(0);
       background-color: hsla(var(--primary-800) / 0.75);
     }
   }
