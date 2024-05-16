@@ -59,3 +59,30 @@ hr {
   );
   height: 8px;
 }
+
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0 0;
+
+  .link-grid__item {
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: hsla(var(--background-200) / 1);
+    transition: background-color 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: hsla(var(--background-300) / 1);
+    }
+
+    h3 {
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}
