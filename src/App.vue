@@ -7,9 +7,16 @@ import Footer from '@/components/Footer.vue'
 <template>
   <Navbar />
 
-  <RouterView v-slot="{ Component, route }">
-    <component :is="Component" :key="route.fullPath" />
-  </RouterView>
+  <router-view v-slot="{ Component, route }">
+    <transition>
+      <suspense v-if="route.meta.wait" :key="route.meta.layout">
+        <component :is="Component" :key="route.path" />
+      </suspense>
+      <suspense v-else>
+        <component :is="Component" :key="route.path" />
+      </suspense>
+    </transition>
+  </router-view>
 
   <hr />
   <Footer />
