@@ -9,14 +9,13 @@ In the future, I plan to provide both a PWA and native Android app using [Capaci
 
 ## Get Vuecuit
 
-Vuecuit will, at some point, be deployed to GitHub Pages at 
+Vuecuit will, at some point, be deployed to GitHub Pages at
 [ttaylor-st.github.io/vuecuit](https://ttaylor-st.github.io/vuecuit).
 
 If and when I choose to support Android, I will provide automatically generated builds on the
 [Releases](https://github.com/ttaylor-st/vuecuit/releases) page and on the Google Play Store.
 
-Can't wa it? You can clone the repository and run it locally, see [Development](#development).
-
+Can't wait? You can clone the repository and run it locally, see [Development](#development).
 
 ## Development
 
@@ -47,12 +46,26 @@ bun run format
 
 ```
 
+## Supporting Vuecuit
+
+Vuecuit development is entirely volunteer-driven.
+If you would like to support Vuecuit, please consider contributing by making a pull request,
+filing an issue, and/or sending us virtual cookies on our Discuit community, which will be made at some point, maybe.
+
+### Contributing
+
+You're welcome to contribute in any way you can, whether it's code, documentation, or just feedback. 
+Before making any significant changes, please open an issue to discuss the changes you'd like to make.
+
+
 ## License
 
 Vuecuit is licensed under the [MIT License](LICENSE).
 
 [Discuit]: https://discuit.net/
+
 [Capacitor]: https://capacitorjs.com/
+
 [Bun]: https://bun.sh/
 
 
