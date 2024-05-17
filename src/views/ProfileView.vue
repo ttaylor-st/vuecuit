@@ -3,36 +3,32 @@ import { ref } from 'vue'
 import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
 import { useRoute } from 'vue-router'
+import type { User, FeedItem } from '@/types/discuitTypes'
+import PostComponent from '@/components/PostComponent.vue'
+import { getProfilePicture } from '@/lib/utils'
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()
 const route = useRoute()
 
-// TODO: Fully define user information.
-const user = ref({
-  username: '',
-  proPic: { url: '' },
-  points: 0,
-  noPosts: 0,
-  noComments: 0,
-  createdAt: '',
-  aboutMe: ''
-})
+const user = ref<User>()
 const joinTime = ref('')
 const pronouns = ref([])
 
 const username = route.params.username
-const profilePicture = ref('')
 
 const fetchedUser = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username}`)
 const fetchedUserBody = await fetchedUser.json()
+const profilePicture = getProfilePicture(fetchedUserBody)
 user.value = fetchedUserBody
 joinTime.value = new Date(fetchedUserBody.createdAt).toLocaleDateString()
 // pronouns.value = userStore.user.aboutMe.match(/(she|he|they)\/(her|him|them)/g) || []
 
-if (fetchedUserBody.proPic === null)
-  profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${fetchedUserBody.username}`
-else profilePicture.value = `${urlStore.url}/${fetchedUserBody.proPic.url}`
+const fetchedFeed = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username}/feed`)
+const fetchedFeedBody = await fetchedFeed.json()
+
+const posts = ref([])
+posts.value = fetchedFeedBody.items.filter((item: FeedItem) => item.type === 'post') || []
 </script>
 
 <template>
@@ -83,9 +79,10 @@ else profilePicture.value = `${urlStore.url}/${fetchedUserBody.proPic.url}`
     </section>
 
     <section>
-      <h2>Posts</h2>
-      <p>TODO: Display user's posts and allow for filtering.</p>
-      <RouterLink class="big-button" to="/">View all posts</RouterLink>
+      <h2>{{ user.username }}'s posts</h2>
+      <div class="posts">
+        <PostComponent v-for="post in posts" :public-id="post.item.publicId" />
+      </div>
     </section>
 
     <section>
@@ -96,6 +93,12 @@ else profilePicture.value = `${urlStore.url}/${fetchedUserBody.proPic.url}`
           <div class="link-grid__item">
             <h3>About</h3>
             <p>Learn more about Vuecuit.</p>
+          </div>
+        </RouterLink>
+        <RouterLink to="/settings">
+          <div class="link-grid__item">
+            <h3>Settings</h3>
+            <p>Configure Vuecuit to your liking.</p>
           </div>
         </RouterLink>
       </div>

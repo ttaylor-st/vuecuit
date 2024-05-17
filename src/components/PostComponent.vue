@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { useUrlStore } from '@/stores/urlStore'
+import { getProfilePicture, timeSince } from '@/lib/utils'
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()
@@ -13,29 +14,6 @@ const props = defineProps({
   }
 })
 
-// TODO: Move to different file.
-function timeSince(postCreatedAt: Date): string {
-  const postTime = new Date(postCreatedAt).getTime()
-  const currentTime = new Date().getTime()
-  const timeDifference = currentTime - postTime
-
-  const seconds = Math.floor(timeDifference / 1000)
-
-  const intervals = {
-    year: 31536000,
-    month: 2592000,
-    week: 604800,
-    day: 86400,
-    hour: 3600,
-    minute: 60
-  }
-
-  for (let unit in intervals) {
-    const value = Math.floor(seconds / intervals[unit])
-    if (value >= 1) return value + ' ' + unit + (value === 1 ? ' ago' : 's ago')
-  }
-  return 'Just now'
-}
 
 const publicId = ref(props.publicId)
 
@@ -47,22 +25,23 @@ const timeElapsedHuman = timeSince(post.createdAt)
 const humanReadableDate = new Date(post.createdAt).toLocaleString()
 
 const author = post.author
-const profilePicture = ref('')
-if (author.proPic === null)
-  profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${author.username}`
-else profilePicture.value = `${urlStore.url}/${author.proPic.url}`
+const authorProfilePicture = getProfilePicture(author)
+
+const community = post.community
+const communityProfilePicture = getProfilePicture(community)
+
 </script>
 
 <template>
   <div class="post">
     <div class="post-header">
-      <RouterLink class="post-header__community" to="/">
-        <img :src="`${urlStore.url}/${post.community.proPic.url}`" alt="community image" />
+      <RouterLink class="post-header__community" :to="`/community/${post.community.name}`">
+        <img :src="`${communityProfilePicture}`" alt="community image" />
         <span>{{ post.community.name }}</span>
       </RouterLink>
 
       <RouterLink class="post-header__user" :to="`/profile/${post.author.username}`">
-        <img :src="profilePicture" alt="user image" />
+        <img :src="authorProfilePicture" alt="user image" />
         <span>{{ post.author.username }}</span>
       </RouterLink>
 
