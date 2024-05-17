@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { useUrlStore } from '@/stores/urlStore'
-import PostComponent from '@/components/PostComponent.vue'
+import PostComponent from '@/components/post/PostComponent.vue'
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()

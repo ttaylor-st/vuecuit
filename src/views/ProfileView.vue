@@ -4,7 +4,7 @@ import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
 import { useRoute } from 'vue-router'
 import type { User, FeedItem } from '@/types/discuitTypes'
-import PostComponent from '@/components/PostComponent.vue'
+import PostComponent from '@/components/post/PostComponent.vue'
 import { getProfilePicture } from '@/lib/utils'
 
 const userStore = useUserStore()
