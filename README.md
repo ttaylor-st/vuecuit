@@ -19,6 +19,9 @@ Can't wait? You can clone the repository and run it locally, see [Development](#
 
 ## Development
 
+Note that Discuit does not currently support CORS, which Vuecuit **needs** to work, as everything is done client-side. 
+[Pull #80](https://github.com/discuitnet/discuit/pull/80) is open to address this issue.
+
 First, make sure you have [Bun] installed.
 
 ```sh
