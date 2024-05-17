@@ -6,7 +6,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition
-    else return { top: 0 }
+    return { top: 0 }
   },
   routes: [
     {
@@ -32,8 +32,17 @@ const router = createRouter({
     {
       path: '/profile/:username',
       name: 'profile',
-      meta: { requiresAuth: true },
       component: () => import('../views/ProfileView.vue')
+    },
+    {
+      path: '/community/:community',
+      name: 'community',
+      component: () => import('../views/CommunityView.vue')
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('../views/SettingsView.vue')
     },
     {
       path: '/login',
