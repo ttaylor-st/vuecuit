@@ -16,14 +16,10 @@ posts.value = data.posts
 
 <template>
   <main>
-    <section>
-      <h1>Home</h1>
-      <p>Posts will go here at some point.</p>
-      <div class="posts">
-        <div v-for="post in posts" :key="post.publicId">
-          <PostComponent :publicId="post.publicId" />
-        </div>
+    <div class="posts">
+      <div v-for="post in posts" :key="post.publicId">
+        <PostComponent :publicId="post.publicId" />
       </div>
-    </section>
+    </div>
   </main>
 </template>
