@@ -15,23 +15,18 @@ const props = defineProps({
   }
 })
 
-
 const publicId = ref(props.publicId)
 
 const post = await userStore
   .makeRequest(`${urlStore.apiUrl}/posts/${publicId.value}`, 'GET')
   .then((res) => res.json())
-
 </script>
 
 <template>
-  <div class="post">
-
+  <RouterLink class="post" :to="`/post/${post.publicId}`">
     <PostHeader :post="post" />
     <PostBody :post="post" />
-
-
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped>

@@ -32,12 +32,20 @@ const router = createRouter({
     {
       path: '/profile/:username',
       name: 'profile',
+      meta: { inTransition: 'slide-right', outTransition: 'slide-left' },
       component: () => import('../views/ProfileView.vue')
     },
     {
       path: '/community/:community',
       name: 'community',
+      meta: { inTransition: 'slide-right', outTransition: 'slide-left' },
       component: () => import('../views/CommunityView.vue')
+    },
+    {
+      path: '/post/:publicId',
+      name: 'post',
+      meta: { inTransition: 'slide-right', outTransition: 'slide-left' },
+      component: () => import('../views/PostView.vue')
     },
     {
       path: '/settings',
