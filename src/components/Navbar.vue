@@ -7,34 +7,34 @@ import IconNotifications from '@/components/icons/IconNotifications.vue'
 
 import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 const urlStore = useUrlStore()
 const userStore = useUserStore()
 
-const profilePicture = ref('')
+const profilePicture = computed(() => {
+  if (userStore.user) {
+    return userStore.user.proPic.url === null
+      ? `https://api.dicebear.com/8.x/identicon/svg?seed=${userStore.user.username}`
+      : `${urlStore.url}/${userStore.user.proPic.url}`
+  }
+  return 'https://api.dicebear.com/8.x/identicon/svg?seed=guest'
+})
 
-if (userStore.user) {
-  if (userStore.user.proPic.url === null)
-    profilePicture.value = `https://api.dicebear.com/8.x/identicon/svg?seed=${userStore.user.username}`
-  else profilePicture.value = `${urlStore.url}/${userStore.user.proPic.url}`
-}
+const navLinks = [
+  { name: 'Home', icon: HomeIcon, to: '/' },
+  { name: 'Collections', icon: IconCollections, to: '/collections' },
+  { name: 'Notifications', icon: IconNotifications, to: '/notifications' },
+  { name: 'Profile', icon: ProfileIcon, to: `/profile/${userStore.user?.username}` }
+]
 </script>
 
 <template>
   <nav class="bottom-nav">
-    <router-link to="/">
-      <HomeIcon />
-    </router-link>
-    <router-link to="/notifications">
-      <IconNotifications />
-    </router-link>
-    <router-link to="/collections">
-      <IconCollections />
-    </router-link>
-    <router-link :to="userStore.user ? `/profile/${userStore.user.username}` : '/login'">
-      <img v-if="userStore.user" :src="profilePicture" alt="Profile Picture" />
-      <ProfileIcon v-else />
+    <router-link v-for="link in navLinks" :key="link.to" :to="link.to" class="nav-link">
+      <component :is="link.icon" v-if="link.name !== 'Profile'" />
+      <img v-if="link.name === 'Profile'" :src="profilePicture" alt="Profile Picture" />
+      <span>{{ link.name }}</span>
     </router-link>
   </nav>
 </template>
@@ -60,7 +60,7 @@ if (userStore.user) {
   bottom: 0;
   left: 0;
   right: 0;
-  min-height: 50px;
+  min-height: 64px;
 
   display: flex;
 
@@ -77,53 +77,48 @@ if (userStore.user) {
     overflow: hidden;
 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    color: hsla(var(--text-800) / 0.75);
+    filter: grayscale(100%);
 
     transition: 0.3s;
 
-    img {
+    span {
+      position: absolute;
+      bottom: -1.5rem;
+      font-size: 0.6rem;
+      opacity: 0;
+      transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    img, svg {
       width: 1.5rem;
       height: 1.5rem;
       border-radius: 50%;
     }
 
-    &::before {
-      z-index: -1;
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 0;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background-color: transparent;
-      transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    &:hover::before {
-      width: 2.5rem;
-      background-color: hsla(var(--primary-800) / 0.25);
-    }
-
     &.router-link-active {
+      filter: grayscale(0);
+
       img,
       svg {
         scale: 1.25;
+        animation: activate_icon 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
-      animation: activate_icon 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      span {
+        opacity: 1;
+        bottom: 4px;
+      }
+
     }
 
-    &.router-link-active::before {
-      width: 2.5rem;
-      background-color: hsla(var(--primary-800) / 0.5);
+    &:hover {
+      background-color: hsla(var(--background-100) / 0.8);
     }
 
-    &.router-link-active:hover::before {
-      background-color: hsla(var(--primary-800) / 0.75);
-    }
   }
 }
 </style>
