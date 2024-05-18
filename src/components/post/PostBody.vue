@@ -20,7 +20,7 @@ const body = markdownToHtml(post.value.body)
 <template>
   <div class="post-body">
     <h2>{{ post.title }}</h2>
-    <p class="content" v-html="body" :style="{ maxHeight: full ? 'none' : 'calc(1.5rem * 3)' }"></p>
+    <p class="content" v-html="body" :style="{ maxHeight: fullBody ? 'none' : 'calc(1.5rem * 3)' }"></p>
   </div>
 </template>
 
