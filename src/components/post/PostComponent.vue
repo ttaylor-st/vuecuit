@@ -36,7 +36,18 @@ const post = await userStore
   gap: 0.5rem;
 
   background-color: hsl(var(--primary-200) / 0.25);
+  border: 1px solid transparent;
   padding: 0.5rem;
   border-radius: 0.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: hsl(var(--primary-200) / 0.5);
+  }
+
+  &:active, &:focus, &:focus-within {
+    background-color: hsl(var(--primary-200) / 0.75);
+    border: 1px solid hsl(var(--primary-600) / 0.5);
+  }
 }
 </style>
