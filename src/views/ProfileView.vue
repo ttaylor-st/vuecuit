@@ -1,39 +1,61 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
 import { useRoute } from 'vue-router'
 import type { User, FeedItem } from '@/types/discuitTypes'
 import PostComponent from '@/components/post/PostComponent.vue'
 import { getProfilePicture } from '@/lib/utils'
+import { markdownToHtml } from '@/lib/markdown'
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()
 const route = useRoute()
 
+const username = ref(route.params.username)
 const user = ref<User>()
 const joinTime = ref('')
-const pronouns = ref([])
+const userStats = computed(() => ({
+  posts: 0,
+  comments: 0,
+  points: 0
+}))
+const pronouns = ref<string[]>([])
+const profilePicture = ref<string>('')
+const posts = ref<FeedItem[]>([])
 
-const username = route.params.username
+const fetchUserData = async () => {
+  const fetchedUser = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username.value}`)
+  const fetchedUserBody = await fetchedUser.json()
+  userStats.value.points = fetchedUserBody.points
+  userStats.value.posts = fetchedUserBody.noPosts
+  userStats.value.comments = fetchedUserBody.noComments
+  user.value = fetchedUserBody
+  joinTime.value = new Date(fetchedUserBody.createdAt).toLocaleDateString()
+  profilePicture.value = getProfilePicture(fetchedUserBody)
+}
 
-const fetchedUser = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username}`)
-const fetchedUserBody = await fetchedUser.json()
-const profilePicture = getProfilePicture(fetchedUserBody)
-user.value = fetchedUserBody
-joinTime.value = new Date(fetchedUserBody.createdAt).toLocaleDateString()
-// pronouns.value = userStore.user.aboutMe.match(/(she|he|they)\/(her|him|them)/g) || []
+const fetchUserFeed = async () => {
+  const fetchedFeed = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username.value}/feed`)
+  const fetchedFeedBody = await fetchedFeed.json()
+  posts.value = fetchedFeedBody.items.filter((item: FeedItem) => item.type === 'post') || []
+}
 
-const fetchedFeed = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username}/feed`)
-const fetchedFeedBody = await fetchedFeed.json()
+const formatStat = (key: string, value: number) => {
+  if (key === 'posts') return `${value} post${value === 1 ? '' : 's'}`
+  if (key === 'comments') return `${value} comment${value === 1 ? '' : 's'}`
+  if (key === 'points') return `${value} point${value === 1 ? '' : 's'}`
+  return ''
+}
 
-const posts = ref([])
-posts.value = fetchedFeedBody.items.filter((item: FeedItem) => item.type === 'post') || []
+fetchUserData()
+fetchUserFeed()
 </script>
 
 <template>
   <main>
     <section>
+      <!-- Profile Section -->
       <div class="profile">
         <div class="profile__header">
           <div class="profile__avatar">
@@ -42,37 +64,13 @@ posts.value = fetchedFeedBody.items.filter((item: FeedItem) => item.type === 'po
           <div class="profile__user">
             <h1>{{ user.username }}</h1>
             <div class="profile__stats">
-              <span
-                :class="{
-                  'low-tier': user.points < 48,
-                  'mid-tier': user.points >= 48 && user.points < 1000,
-                  'high-tier': user.points >= 1000
-                }"
-              >
-                {{ user.points === 1 ? '1 point' : `${user.points} points` }}
-              </span>
-              <span
-                :class="{
-                  'low-tier': user.noPosts < 10,
-                  'mid-tier': user.noPosts >= 10 && user.noPosts < 50,
-                  'high-tier': user.noPosts >= 50
-                }"
-              >
-                {{ user.noPosts === 1 ? '1 post' : `${user.noPosts} posts` }}
-              </span>
-              <span
-                :class="{
-                  'low-tier': user.noComments < 24,
-                  'mid-tier': user.noComments >= 24 && user.noComments < 100,
-                  'high-tier': user.noComments >= 256
-                }"
-              >
-                {{ user.noComments === 1 ? '1 comment' : `${user.noComments} comments` }}
+              <span v-for="(value, key) in userStats" :key="key">
+                {{ formatStat(key, value) }}
               </span>
               <span>Joined {{ joinTime }}</span>
               <span v-for="pronoun in pronouns" :key="pronoun">{{ pronoun }}</span>
             </div>
-            <p>{{ user.aboutMe }}</p>
+            <p :innerHTML="markdownToHtml(user.aboutMe)" />
           </div>
         </div>
       </div>
