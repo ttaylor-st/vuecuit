@@ -1,20 +1,14 @@
 <script lang="ts" setup>
-
 // TODO: Merge CSS of `ProfileView` and `CommunityView`
 
-import { ref } from 'vue'
 import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
 import { useRoute } from 'vue-router'
-import type { Community } from '@/types/discuitTypes'
 import { getProfilePicture } from '@/lib/utils'
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()
 const route = useRoute()
-
-const community = ref<Community>()
-const createdTime = ref('')
 
 const communityName = route.params.community
 
@@ -22,8 +16,8 @@ const fetchedCommunity = await userStore.makeRequest(
   `${urlStore.apiUrl}/communities/${communityName}?byName=true`
 )
 const fetchedCommunityBody = await fetchedCommunity.json()
-community.value = fetchedCommunityBody
-createdTime.value = new Date(fetchedCommunityBody.createdAt).toLocaleDateString()
+const community = fetchedCommunityBody
+const createdTime = new Date(fetchedCommunityBody.createdAt).toLocaleDateString()
 
 const profilePicture = getProfilePicture(fetchedCommunityBody)
 </script>
