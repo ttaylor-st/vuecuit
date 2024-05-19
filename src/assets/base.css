@@ -1,6 +1,6 @@
 /* colour palette from <https://www.realtimecolors.com/?colors=edf2f4-0a0d10-a5b6c7-6d4457-ab7e78&fonts=Inter-Inter> */
 @media (prefers-color-scheme: light) {
-  :root {
+  #app {
     --text-50: 308 92% 95%;
     --text-100: 309 92% 90%;
     --text-200: 309 94% 80%;
@@ -63,7 +63,7 @@
   }
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  #app {
     --text-50: 308 92% 5%;
     --text-100: 308 92% 10%;
     --text-200: 308 94% 20%;
@@ -134,7 +134,7 @@
   font-weight: normal;
 }
 
-body {
+#app {
   color: hsla(var(--text-950) / 1);
   background: hsla(var(--background-50) / 1);
   transition:
