@@ -50,7 +50,7 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Community</template>
 
-    Need help? Join the <a href="https://discuit.net/vuecuit">Discuit</a> community and make a post.
+    Need help? Join the <a href="https://discuit.net/Vuecuit">Discuit</a> community and make a post.
     You can also file an issue on our
     <a href="https://github.com/ttaylor-st/vuecuit/issues">GitHub</a>
     repository.
@@ -64,6 +64,6 @@ import SupportIcon from './icons/IconSupport.vue'
 
     Vuecuit development is entirely volunteer-driven. If you would like to support us, please
     consider contributing by making a pull request, filing an issue, and/or sending us virtual
-    cookies on our <a href="https://discuit.net/vuecuit">Discuit</a> community 🍪.
+    cookies on our <a href="https://discuit.net/Vuecuit">Discuit</a> community 🍪.
   </AboutItem>
 </template>

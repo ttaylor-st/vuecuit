@@ -53,7 +53,8 @@ bun run format
 
 Vuecuit development is entirely volunteer-driven.
 If you would like to support Vuecuit, please consider contributing by making a pull request,
-filing an issue, and/or sending us virtual cookies on our Discuit community, which will be made at some point, maybe.
+filing an issue, and/or sending us virtual cookies on our [Discuit community](https://discuit.net/Vuecuit),
+which will be made at some point, maybe.
 
 ### Contributing
 
