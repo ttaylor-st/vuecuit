@@ -1,0 +1,7 @@
+@mixin outline {
+  outline: 2px solid hsla(var(--accent-500) / 1);
+}
+
+@mixin outline-secondary {
+  outline: 2px solid hsla(var(--accent-400) / 1);
+}

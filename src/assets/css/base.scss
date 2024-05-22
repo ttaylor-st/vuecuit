@@ -1,3 +1,5 @@
+@import 'mixins.scss';
+
 /* colour palette from <https://www.realtimecolors.com/?colors=edf2f4-0a0d10-a5b6c7-6d4457-ab7e78&fonts=Inter-Inter> */
 @media (prefers-color-scheme: light) {
   #app {
@@ -137,6 +139,7 @@
 #app {
   color: hsla(var(--text-950) / 1);
   background: hsla(var(--background-50) / 1);
+  min-height: 100dvh;
   transition:
     color 0.5s,
     background-color 0.5s;

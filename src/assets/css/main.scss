@@ -1,4 +1,4 @@
-@import './base.css';
+@import 'base.scss';
 
 #app {
   font-weight: normal;
@@ -10,9 +10,14 @@ a {
   color: hsla(var(--primary-800) / 1);
   font-weight: bold;
   transition: 0.4s;
+}
 
-  &:hover {
-    color: hsla(var(--primary-600) / 1);
+a, button, input, select, textarea {
+  &:focus-within {
+    @include outline-secondary;
+  }
+  &:focus {
+    @include outline;
   }
 }
 
