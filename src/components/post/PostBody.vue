@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { markdownToHtml } from '@/lib/markdown'
-
 import { useUrlStore } from '@/stores/urlStore'
+import type { Post } from '@/types/discuitTypes'
 
 const urlStore = useUrlStore()
 const props = defineProps({
   post: {
-    type: Object,
+    type: Object as () => Post,
     required: true
   },
   fullBody: {

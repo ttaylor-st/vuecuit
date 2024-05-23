@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
 import { getProfilePicture, timeSince } from '@/lib/utils'
 import { ref } from 'vue'
+import type { Post } from '@/types/discuitTypes'
 
 const props = defineProps({
   post: {
-    type: Object,
+    type: Object as () => Post,
     required: true
   }
 })
@@ -20,7 +20,6 @@ const authorProfilePicture = getProfilePicture(author)
 
 const community = post.value.community
 const communityProfilePicture = getProfilePicture(community)
-
 </script>
 
 <template>
