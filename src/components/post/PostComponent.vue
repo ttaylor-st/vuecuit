@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router'
 
 import PostHeader from '@/components/post/PostHeader.vue'
 import PostBody from '@/components/post/PostBody.vue'
+import PostFooter from '@/components/post/PostFooter.vue'
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()
@@ -33,7 +34,8 @@ const navigateToPost = () => {
   <div class="post" @click="navigateToPost" @keydown.enter="navigateToPost" tabindex="0" role="button">
     <PostHeader :post="post" />
     <PostBody :post="post" />
-  </RouterLink>
+    <PostFooter :post="post" />
+  </div>
 </template>
 
 <style scoped>
