@@ -1,3 +1,4 @@
+import 'vue-material-design-icons/styles.css';
 import './assets/css/main.scss'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
