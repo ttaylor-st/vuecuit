@@ -16,9 +16,102 @@ a, button, input, select, textarea {
   &:focus-within {
     @include outline-secondary;
   }
+
   &:focus {
     @include outline;
   }
+}
+
+button {
+  background-color: hsla(var(--primary-500) / 1);
+  color: hsla(var(--background-50) / 1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    font-weight: bold;
+
+  }
+
+  input, select, textarea {
+    background-color: hsla(var(--background-200) / 0.75);
+    color: hsla(var(--text-950) / 1);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid hsla(var(--background-300) / 1);
+    transition: background-color 0.2s;
+
+    &:focus {
+      @include outline;
+      background-color: hsla(var(--background-300) / 1);
+    }
+
+    &:hover {
+      background-color: hsla(var(--background-300) / 1);
+    }
+
+    &::placeholder {
+      color: hsla(var(--text-700) / 1);
+    }
+
+  }
+
+  button {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid hsla(var(--background-300) / 0);
+    color: hsla(var(--text-950) / 1);
+    font-weight: bold;
+    transition: background-color 0.2s;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover, &:focus {
+      background-color: hsla(var(--background-300) / 1);
+      border: 1px solid hsla(var(--background-300) / 1);
+    }
+
+    &.secondary {
+      background-color: hsla(var(--secondary-500) / 1);
+
+      &:hover {
+        background-color: hsla(var(--secondary-600) / 1);
+      }
+    }
+
+  }
+
+
+  .form-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+}
+
+div.warning {
+  padding: 0.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  background-color: hsla(var(--background-200) / 0.25);
+  border-left: 4px solid hsla(var(--accent-500) / 1);
+  color: hsla(var(--text-950) / 1);
+
+  p {
+    font-style: italic;
+  }
+
 }
 
 main {
@@ -52,17 +145,12 @@ hr {
   --R: calc(var(--size) * sqrt(var(--m) * var(--m) + 1) + var(--b) / 2);
 
   --_g: #0000 calc(99% - var(--b)), #000 calc(101% - var(--b)) 99%, #0000 101%;
-  -webkit-mask:
-    radial-gradient(var(--R) at left 50% bottom calc(-1 * var(--p)), var(--_g))
-      calc(50% - 2 * var(--size)) calc(50% - var(--size) / 2 - var(--b) / 2) / calc(4 * var(--size))
-      calc(var(--size) + var(--b)) repeat-x,
-    radial-gradient(var(--R) at left 50% top calc(-1 * var(--p)), var(--_g)) 50%
-      calc(50% + var(--size) / 2 + var(--b) / 2) / calc(4 * var(--size))
-      calc(var(--size) + var(--b)) repeat-x;
+  -webkit-mask: radial-gradient(var(--R) at left 50% bottom calc(-1 * var(--p)), var(--_g)) calc(50% - 2 * var(--size)) calc(50% - var(--size) / 2 - var(--b) / 2) / calc(4 * var(--size)) calc(var(--size) + var(--b)) repeat-x,
+  radial-gradient(var(--R) at left 50% top calc(-1 * var(--p)), var(--_g)) 50% calc(50% + var(--size) / 2 + var(--b) / 2) / calc(4 * var(--size)) calc(var(--size) + var(--b)) repeat-x;
   background: linear-gradient(
-    90deg,
-    hsla(var(--primary-800) / 0.75),
-    hsla(var(--primary-800) / 0.75)
+                  90deg,
+                  hsla(var(--primary-800) / 0.75),
+                  hsla(var(--primary-800) / 0.75)
   );
   height: 8px;
 }
@@ -102,10 +190,10 @@ hr {
 }
 
 pre:has(code) {
-    padding: 1rem;
-    border-radius: 0.5rem;
-    background-color: hsla(var(--background-50) / 1);
-    overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: hsla(var(--background-50) / 1);
+  overflow-x: auto;
 }
 
 code {
