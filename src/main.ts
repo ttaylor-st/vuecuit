@@ -1,13 +1,12 @@
-import 'vue-material-design-icons/styles.css';
+import 'vue-material-design-icons/styles.css'
 import './assets/css/main.scss'
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
-const DEFAULT_URL = 'http://192.168.1.54:80'
 const USER_REFRESH_INTERVAL = 5000
 
 function initializeApp(): ReturnType<typeof createApp> {
@@ -20,16 +19,9 @@ function initializeApp(): ReturnType<typeof createApp> {
 }
 
 async function initializeStores(): Promise<void> {
-  const localStorageUrl = localStorage.getItem('url')
-  if (localStorageUrl) {
-    useUrlStore().setBaseUrl(localStorageUrl)
-  } else {
-    useUrlStore().setBaseUrl(DEFAULT_URL)
-    useUrlStore().setApiUrl(`${useUrlStore().url}/api`)
-  }
-
   const localStorageToken = localStorage.getItem('csrfToken')
   if (localStorageToken) await useUserStore().setXcsrfToken(localStorageToken)
+  useUrlStore().loadUrls()
   await useUserStore().initial()
   await useUserStore().fetchUser()
 }
