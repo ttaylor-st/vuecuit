@@ -1,5 +1,5 @@
-import type { Community, User } from '@/types/discuitTypes'
 import { useUrlStore } from '@/stores/urlStore'
+import type { Community, User } from '@/types/discuitTypes'
 
 export function randomString(length: number): string {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -39,7 +39,7 @@ export function getProfilePicture(target?: User | Community): string {
   const defaultPicUrl = 'https://api.dicebear.com/8.x/identicon/svg?seed='
 
   if (target) {
-    if (target.proPic) return `${baseUrl}/${target.proPic.url}`
+    if (target.proPic) return `${baseUrl}/${target.proPic.url}`.replace(/([^:]\/)\/+/g, '$1')
     return `${defaultPicUrl}${target.id}`
   }
 
