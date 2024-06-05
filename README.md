@@ -10,7 +10,9 @@ In the future, I plan to provide both a PWA and native Android app using [Capaci
 ## Get Vuecuit
 
 Vuecuit is available on GitHub Pages at
-[ttaylor-st.github.io/vuecuit](https://ttaylor-st.github.io/vuecuit), **but** it is not production ready.
+[ttaylor-st.github.io/vuecuit](https://ttaylor-st.github.io/vuecuit), but it is **not** production
+ready and you **will** encounter issues with CORS if trying to use it with the official Discuit
+instance
 
 If and when I choose to support Android, I will provide automatically generated builds on the
 [Releases](https://github.com/ttaylor-st/vuecuit/releases) page and on the Google Play Store.
@@ -19,7 +21,10 @@ Can't wait? You can clone the repository and run it locally, see [Development](#
 
 ## Development
 
-Note that Discuit does not currently support CORS, which Vuecuit **needs** to work, as everything is done client-side. 
+### Setup
+
+Note that Discuit does not currently support CORS, which Vuecuit **needs** to work, as everything is
+done client-side.
 [Pull #80](https://github.com/discuitnet/discuit/pull/80) is open to address this issue.
 
 First, make sure you have [Bun] installed.
@@ -49,18 +54,39 @@ bun run format
 
 ```
 
+### Starting the development server
+
+```sh
+bun run dev
+```
+
+This will start a development server at `http://localhost:5173/`. The page will reload if you make
+any edits. You'll also probably want to change the API URL set by the
+[`urlStore`](src/stores/urlStore.ts) to `http://localhost:5173/`, which can be done in
+the `/settings` page.
+
+### Building for production
+
+```sh
+bun run build
+```
+
+This will build the app for production to the `dist/` directory. You can also use `bun run
+build-only` to skip any pre-build checks.
+
 ## Supporting Vuecuit
 
 Vuecuit development is entirely volunteer-driven.
 If you would like to support Vuecuit, please consider contributing by making a pull request,
-filing an issue, and/or sending us virtual cookies on our [Discuit community](https://discuit.net/Vuecuit),
+filing an issue, and/or sending us virtual cookies on
+our [Discuit community](https://discuit.net/Vuecuit),
 which will be made at some point, maybe.
 
 ### Contributing
 
-You're welcome to contribute in any way you can, whether it's code, documentation, or just feedback. 
-Before making any significant changes, please open an issue to discuss the changes you'd like to make.
-
+You're welcome to contribute in any way you can, whether it's code, documentation, or just feedback.
+Before making any significant changes, please open an issue to discuss the changes you'd like to
+make.
 
 ## License
 
