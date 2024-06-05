@@ -2,6 +2,7 @@
 import { markdownToHtml } from '@/lib/markdown'
 import { useUrlStore } from '@/stores/urlStore'
 import type { Post } from '@/types/discuitTypes'
+import { ref } from 'vue'
 
 const urlStore = useUrlStore()
 const props = defineProps({
