@@ -18,19 +18,18 @@ export function timeSince(postCreatedAt: Date): string {
   const seconds = Math.floor(timeDifference / 1000)
 
   const intervals = {
-    year: 31536000,
-    month: 2592000,
-    week: 604800,
-    day: 86400,
-    hour: 3600,
-    minute: 60
+    y: 31536000,
+    w: 604800,
+    d: 86400,
+    h: 3600,
+    m: 60
   }
 
   for (const unit in intervals) {
     const value = Math.floor(seconds / intervals[unit])
-    if (value >= 1) return `${value} ${unit}${value > 1 ? 's' : ''} ago`
+    if (value >= 1) return `${value}${unit} ago`
   }
-  return 'Just now'
+  return 'now'
 }
 
 export function getProfilePicture(target?: User | Community): string {
