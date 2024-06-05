@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
 import { markdownToHtml } from '@/lib/markdown'
 import { useUrlStore } from '@/stores/urlStore'
 import type { Post } from '@/types/discuitTypes'
@@ -52,7 +51,7 @@ if (post.value.type === 'link') {
 .post-body {
   h2 {
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
   .content {

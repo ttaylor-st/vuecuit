@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getProfilePicture, timeSince } from '@/lib/utils'
-import { ref } from 'vue'
 import type { Post } from '@/types/discuitTypes'
+import { ref } from 'vue'
 
 const props = defineProps({
   post: {
@@ -43,7 +43,8 @@ const communityProfilePicture = getProfilePicture(community)
 
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/css/mixins.scss';
 
 .post-header {
   display: flex;
@@ -59,11 +60,7 @@ const communityProfilePicture = getProfilePicture(community)
     display: flex;
     gap: 0.5rem;
     align-items: center;
-    background-color: hsl(var(--primary-200) / 0.5);
-    padding: 0.25rem;
-    border-radius: 5rem;
     user-select: none;
-    border: 1px solid hsl(var(--primary-300) / 0.5);
     transition: 0.25s;
 
     &.post-header__community {
@@ -82,14 +79,12 @@ const communityProfilePicture = getProfilePicture(community)
     }
 
     &:hover {
-      background-color: hsl(var(--primary-200) / 0.75);
-      border: 1px solid hsla(var(--primary-400) / 0.5);
-      color: inherit;
+      color: var(--primary-600);
     }
 
-    &:active {
-      background-color: hsl(var(--primary-200) / 0.9);
-      border: 1px solid hsla(var(--primary-500) / 0.5);
+
+    &:focus {
+      color: var(--primary-600);
     }
   }
 }
