@@ -68,7 +68,7 @@ export const useUserStore = defineStore('user', {
       const { apiUrl } = useUrlStore()
 
       try {
-        const response = await this.makeRequest(`${apiUrl}/_logout`, { method: 'POST' })
+        const response = await this.makeRequest(`${apiUrl}/_login?action=logout`, { method: 'POST' })
 
         if (response.ok) {
           this.user = null
@@ -101,9 +101,6 @@ export const useUserStore = defineStore('user', {
     },
 
     async fetchUser() {
-      // TODO: This will result in a 401 not_logged_in error, even if
-      //       the CSRF token is set. Don't know why. I swear it worked
-      //       before.
       const { apiUrl } = useUrlStore()
       this.loading = true
       this.error = null
@@ -112,9 +109,8 @@ export const useUserStore = defineStore('user', {
         const response = await this.makeRequest(`${apiUrl}/_user`)
 
         if (response.ok) {
-          const csrfToken = response.headers.get('Csrf-Token')
-          await this.setXcsrfToken(csrfToken)
           this.user = await response.json()
+          return this.user
         } else this.error = await response.text()
       } catch (error) {
         this.error = error
