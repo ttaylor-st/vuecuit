@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import {onMounted, ref} from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { useUrlStore } from '@/stores/urlStore'
 import { useRouter } from 'vue-router'
@@ -7,11 +7,13 @@ import { useRouter } from 'vue-router'
 import PostHeader from '@/components/post/PostHeader.vue'
 import PostBody from '@/components/post/PostBody.vue'
 import PostFooter from '@/components/post/PostFooter.vue'
+import type {Post} from "@/types/discuitTypes";
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()
 const router = useRouter()
 
+const loading = ref(true)
 const props = defineProps({
   publicId: {
     type: String,
@@ -20,10 +22,17 @@ const props = defineProps({
 })
 
 const publicId = ref(props.publicId)
+const post = ref<Post>()
 
-const post = await userStore
-  .makeRequest(`${urlStore.apiUrl}/posts/${publicId.value}`, 'GET')
-  .then((res) => res.json())
+onMounted(async () => {
+  post.value = await userStore
+      .makeRequest(`${urlStore.apiUrl}/posts/${publicId.value}`, 'GET')
+      .then((res) => res.json())
+      .catch((err) => console.error(err))
+
+  loading.value = false
+})
+
 
 const navigateToPost = () => {
   router.push(`/post/${post.publicId}`)
@@ -31,33 +40,23 @@ const navigateToPost = () => {
 </script>
 
 <template>
-  <div class="post" @click="navigateToPost" @keydown.enter="navigateToPost" tabindex="0" role="button">
+  <div class="post" @click="navigateToPost" @keydown.enter="navigateToPost" tabindex="0" role="button"
+    aria-label="View post" aria-describedby="post" v-if="!loading">
     <PostHeader :post="post" />
     <PostBody :post="post" />
     <PostFooter :post="post" />
   </div>
+  <div v-else class="post">
+    <div class="skeleton skeleton--post-header">
+      <div class="skeleton skeleton--avatar"></div>
+      <div class="skeleton skeleton--username"></div>
+      <div class="skeleton skeleton--date"></div>
+    </div>
+    <div class="skeleton skeleton--post-body"></div>
+    <div class="skeleton skeleton--post-footer"></div>
+  </div>
 </template>
 
 <style scoped>
-.post {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  cursor: pointer;
 
-  background-color: hsl(var(--primary-200) / 0.25);
-  border: 1px solid transparent;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: hsl(var(--primary-200) / 0.5);
-  }
-
-  &:active, &:focus, &:focus-within {
-    background-color: hsl(var(--primary-200) / 0.75);
-    border: 1px solid hsl(var(--primary-600) / 0.5);
-  }
-}
 </style>

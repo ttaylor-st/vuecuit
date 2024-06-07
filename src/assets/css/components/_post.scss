@@ -1,5 +1,65 @@
 @import '@/assets/css/mixins.scss';
 
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: pointer;
+
+  background-color: hsl(var(--primary-200) / 0.25);
+  border: 1px solid transparent;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: hsl(var(--primary-200) / 0.5);
+  }
+
+  &:active, &:focus, &:focus-within {
+    background-color: hsl(var(--primary-200) / 0.75);
+    border: 1px solid hsl(var(--primary-600) / 0.5);
+  }
+
+  .skeleton--post-header {
+    background: none;
+    padding: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 24px 1fr 100px;
+    gap: 0.5rem;
+
+    .skeleton--avatar {
+      width: 24px;
+      aspect-ratio: 1/1;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .skeleton--username {
+      width: 100px;
+      height: 100%;
+    }
+
+    .skeleton--date {
+      width: 100px;
+      height: 100%;
+    }
+  }
+
+  .skeleton--post-body {
+    width: 100%;
+    height: 100px;
+  }
+
+  .skeleton--post-footer {
+    width: 100%;
+    height: 24px;
+  }
+
+
+}
+
 .post-header {
   display: flex;
   gap: 0.5rem;

@@ -35,7 +35,7 @@ if (post.value.type === 'link') {
 
     <div v-if="image" class="image" @click.stop @keydown.enter.stop role="button">
       <a :href="link.url" target="_blank" v-if="link">
-        <img :src="image" alt="Post image" />
+        <img :src="image" alt="Post image" v-if="link.image" />
         <p>Via <span class="hostname">{{ link.hostname }}</span></p>
       </a>
 
