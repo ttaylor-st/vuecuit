@@ -30,6 +30,11 @@ const router = createRouter({
       component: () => import('../views/NotificationsView.vue')
     },
     {
+      path: '/more',
+      name: 'more',
+      component: () => import('../views/MoreView.vue')
+    },
+    {
       path: '/profile/:username',
       name: 'profile',
       meta: { inTransition: 'slide-right', outTransition: 'slide-left' },

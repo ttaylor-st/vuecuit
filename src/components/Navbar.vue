@@ -20,21 +20,28 @@ const profilePicture = computed(() => {
   }
   return 'https://api.dicebear.com/8.x/identicon/svg?seed=guest'
 })
-
-const navLinks = [
-  { name: 'Home', icon: HomeIcon, to: '/' },
-  { name: 'Collections', icon: IconCollections, to: '/collections' },
-  { name: 'Notifications', icon: IconNotifications, to: '/notifications' },
-  { name: 'Profile', icon: ProfileIcon, to: `/profile/${userStore.user?.username}` }
-]
 </script>
 
 <template>
   <nav class="bottom-nav">
-    <router-link v-for="link in navLinks" :key="link.to" :to="link.to" class="nav-link">
-      <component :is="link.icon" v-if="link.name !== 'Profile'" />
-      <img v-if="link.name === 'Profile'" :src="profilePicture" alt="Profile Picture" />
-      <span>{{ link.name }}</span>
+    <router-link to="/" exact>
+      <img :src="profilePicture" alt="Home" />
+      <span>Home</span>
+    </router-link>
+    <router-link to="/collections">
+      <IconCollections />
+      <span>Collections</span>
+    </router-link>
+    <router-link to="/notifications">
+      <IconNotifications />
+      <span>Notifications</span>
+      <div v-if="userStore.user?.notificationsNewCount > 0" class="notification-badge">
+        {{ userStore.user?.notificationsNewCount }}
+      </div>
+    </router-link>
+    <router-link to="/more">
+      <ProfileIcon />
+      <span>More</span>
     </router-link>
   </nav>
 </template>
@@ -91,6 +98,18 @@ const navLinks = [
       font-size: 0.6rem;
       opacity: 0;
       transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: hsl(0, 100%, 50%);
+      color: hsl(0, 100%, 100%);
+      font-size: 0.5rem;
+      padding: 0.1rem 0.3rem;
+      border-radius: 50%;
+      transform: translate(50%, -50%);
     }
 
     img, svg {
