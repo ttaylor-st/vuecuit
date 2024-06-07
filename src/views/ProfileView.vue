@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+// TODO: Create a Comment component
+
+import {ref, computed, watch} from 'vue'
 import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
 import { useRoute } from 'vue-router'
@@ -11,6 +13,9 @@ import { markdownToHtml } from '@/lib/markdown'
 const userStore = useUserStore()
 const urlStore = useUrlStore()
 const route = useRoute()
+
+const selectedTab = ref('posts')
+const loading = ref(false)
 
 const username = ref(route.params.username)
 const user = ref<User>()
@@ -36,10 +41,17 @@ const fetchUserData = async () => {
 }
 
 const fetchUserFeed = async () => {
-  const fetchedFeed = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username.value}/feed`)
+  loading.value = true
+  const filter = selectedTab.value === 'overview' ? '' : selectedTab.value
+  const fetchedFeed = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username.value}/feed?filter=${filter}`)
   const fetchedFeedBody = await fetchedFeed.json()
   posts.value = fetchedFeedBody.items.filter((item: FeedItem) => item.type === 'post') || []
+  loading.value = false
 }
+
+watch(selectedTab, () => {
+  fetchUserFeed()
+}, { immediate: true })
 
 const formatStat = (key: string, value: number) => {
   if (key === 'posts') return `${value} post${value === 1 ? '' : 's'}`
@@ -61,7 +73,7 @@ fetchUserFeed()
           <div class="profile__avatar">
             <img :src="profilePicture" alt="Profile Picture" />
           </div>
-          <div class="profile__user">
+          <div class="profile__user" v-if="user">
             <h1>{{ user.username }}</h1>
             <div class="profile__stats">
               <span v-for="(value, key) in userStats" :key="key">
@@ -76,29 +88,49 @@ fetchUserFeed()
       </div>
     </section>
 
-    <section>
-      <h2>{{ user.username }}'s posts</h2>
-      <div class="posts">
-        <PostComponent v-for="post in posts" :public-id="post.item.publicId" />
+      <div class="tabs">
+        <button v-for="tab in ['Posts', 'Comments', 'Overview']" :key="tab" @click="selectedTab = tab.toLowerCase()"
+          :class="{ 'is-active': selectedTab === tab.toLowerCase() } ">
+          {{ tab }}
+        </button>
+      </div>
+
+    <section v-if="selectedTab === 'posts'">
+      <h2>Posts</h2>
+      <div v-if="loading">
+        <p>Loading...</p>
+      </div>
+      <div v-else-if="posts.length > 0" class="posts">
+        <PostComponent v-for="post in posts" :key="post.item.id" :public-id="post.item.publicId" />
+      </div>
+      <div v-else>
+        <p>No posts to show.</p>
       </div>
     </section>
 
-    <section>
-      <h2>Things</h2>
+    <section v-else-if="selectedTab === 'comments'">
+      <h2>Comments</h2>
+      <div v-if="loading">
+        <p>Loading...</p>
+      </div>
+      <div v-else-if="posts.length > 0" class="posts">
+        <PostComponent v-for="post in posts" :key="post.item.id" :public-id="post.item.publicId" />
+      </div>
+      <div v-else>
+        <p>No posts to show.</p>
+      </div>
+    </section>
 
-      <div class="link-grid">
-        <RouterLink to="/about">
-          <div class="link-grid__item">
-            <h3>About</h3>
-            <p>Learn more about Vuecuit.</p>
-          </div>
-        </RouterLink>
-        <RouterLink to="/settings">
-          <div class="link-grid__item">
-            <h3>Settings</h3>
-            <p>Configure Vuecuit to your liking.</p>
-          </div>
-        </RouterLink>
+    <section v-else>
+      <h2>Overview</h2>
+      <div v-if="posts.length > 0" class="posts">
+        <PostComponent v-for="post in posts" :key="post.item.id" :public-id="post.item.publicId" />
+      </div>
+      <div v-else-if="loading">
+        <p>Loading...</p>
+      </div>
+      <div v-else>
+        <p>Nothing to show.</p>
       </div>
     </section>
   </main>
