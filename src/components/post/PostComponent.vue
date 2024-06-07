@@ -56,7 +56,3 @@ const navigateToPost = () => {
     <div class="skeleton skeleton--post-footer"></div>
   </div>
 </template>
-
-<style scoped>
-
-</style>
