@@ -25,7 +25,7 @@ const profilePicture = computed(() => {
 <template>
   <nav class="bottom-nav">
     <router-link to="/" exact>
-      <img :src="profilePicture" alt="Home" />
+      <HomeIcon />
       <span>Home</span>
     </router-link>
     <router-link to="/collections">
