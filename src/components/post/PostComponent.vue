@@ -35,7 +35,7 @@ onMounted(async () => {
 
 
 const navigateToPost = () => {
-  router.push(`/post/${post.publicId}`)
+  router.push(`/post/${publicId.value}`)
 }
 </script>
 
