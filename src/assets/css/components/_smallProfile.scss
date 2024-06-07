@@ -1,0 +1,36 @@
+.small-profile {
+  background-color: hsla(var(--background-100) / 1);
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid transparent;
+
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &__username {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__picture {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    background-color: hsla(var(--background-200) / 0.75);
+  }
+
+  &:active, &:focus, &:focus-within {
+    outline: none;
+    background-color: hsla(var(--background-200) / 1);
+    border: 1px solid hsla(var(--primary-600) / 0.5);
+  }
+
+}
