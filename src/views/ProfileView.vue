@@ -43,7 +43,7 @@ const fetchUserData = async () => {
 const fetchUserFeed = async () => {
   loading.value = true
   const filter = selectedTab.value === 'overview' ? '' : selectedTab.value
-  const fetchedFeed = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username.value}/feed?filter=${filter}`)
+  const fetchedFeed = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username.value}/feed?filter=${filter}`) || { json: () => [] }
   const fetchedFeedBody = await fetchedFeed.json()
   posts.value = fetchedFeedBody.items.filter((item: FeedItem) => item.type === 'post') || []
   loading.value = false
@@ -89,7 +89,7 @@ fetchUserFeed()
     </section>
 
       <div class="tabs">
-        <button v-for="tab in ['Posts', 'Comments', 'Overview']" :key="tab" @click="selectedTab = tab.toLowerCase()"
+        <button v-for="tab in (['Posts', 'Comments', 'Overview'] || [])" :key="tab" @click="selectedTab = tab.toLowerCase()"
           :class="{ 'is-active': selectedTab === tab.toLowerCase() } ">
           {{ tab }}
         </button>
@@ -101,7 +101,7 @@ fetchUserFeed()
         <p>Loading...</p>
       </div>
       <div v-else-if="posts.length > 0" class="posts">
-        <PostComponent v-for="post in posts" :key="post.item.id" :public-id="post.item.publicId" />
+        <PostComponent v-for="post in (posts || [])" :key="post.item.id" :public-id="post.item.publicId" />
       </div>
       <div v-else>
         <p>No posts to show.</p>
@@ -114,7 +114,7 @@ fetchUserFeed()
         <p>Loading...</p>
       </div>
       <div v-else-if="posts.length > 0" class="posts">
-        <PostComponent v-for="post in posts" :key="post.item.id" :public-id="post.item.publicId" />
+        <PostComponent v-for="post in (posts || [])" :key="post.item.id" :public-id="post.item.publicId" />
       </div>
       <div v-else>
         <p>No posts to show.</p>

@@ -10,6 +10,10 @@ const props = defineProps({
   user: {
     type: Object as () => User,
     required: true
+  },
+  usernamePrefix: {
+    type: String,
+    default: ''
   }
 })
 
@@ -52,7 +56,7 @@ isLoading.value = false
       <img :src="profilePicture" alt="Profile Picture" class="small-profile__picture" />
     </div>
     <div class="small-profile__info">
-      <h3 class="small-profile__username">{{ user?.username }}</h3>
+      <h3 class="small-profile__username">{{ usernamePrefix }}{{ user.username }}</h3>
       <p class="small-profile__action-text">Open profile page</p>
     </div>
   </div>
