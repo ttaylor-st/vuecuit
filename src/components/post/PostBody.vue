@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { markdownToHtml } from '@/lib/markdown'
 import { useUrlStore } from '@/stores/urlStore'
-import type { Post } from '@/types/discuitTypes'
-import { ref } from 'vue'
+import type {Image, Link, Post} from '@/types/discuitTypes'
+import { ref, computed } from 'vue'
 import DiscuitImage from '../DiscuitImage.vue'
 
 const urlStore = useUrlStore()
@@ -18,15 +18,26 @@ const props = defineProps({
 })
 
 const post = ref(props.post)
-const body = markdownToHtml(post.value.body)
-let image: string = null
-let link: object = null
+const body = computed(() => markdownToHtml(`${post.value?.body?.slice(0, 500)}...`))
 
-if (post.value.type === 'image') image = `${urlStore.url}${post.value.image.url}`
-if (post.value.type === 'link') {
-  link = post.value.link
-  image = `${urlStore.url}${link.image.url}`
-}
+const image = computed(() => {
+  if (!post.value) return
+  if (post.value.type === 'image') {
+    if (!post.value.image) return
+    return `${urlStore.url}${post.value.image.url}`
+  }
+  if (post.value.type === 'link') {
+    if (!post.value.link) return
+    const link = post.value.link
+    if (link.image) return `${urlStore.url}${link.image.url}`
+  }
+})
+
+const link = computed(() => {
+  if (post.value.type === 'link') return post.value.link
+})
+
+
 </script>
 
 <template>

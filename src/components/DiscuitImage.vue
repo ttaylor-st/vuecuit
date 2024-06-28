@@ -9,7 +9,11 @@ const props = defineProps<{
   loading?: 'lazy' | 'eager'
 }>()
 
-if (!props.loading) props.loading = 'lazy'
+let loading = props.loading || 'lazy'
+if (loading !== 'lazy' && loading !== 'eager') {
+  loading = 'lazy'
+}
+
 </script>
 
 <template>
@@ -18,7 +22,7 @@ if (!props.loading) props.loading = 'lazy'
     <img
       :src="props.src"
       :alt="props.alt"
-      :loading="props.loading"
+      :loading="loading"
       @load="imageLoaded = true"
     />
     <div
