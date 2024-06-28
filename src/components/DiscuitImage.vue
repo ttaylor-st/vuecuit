@@ -10,10 +10,7 @@ const props = defineProps<{
 }>()
 
 let loading = props.loading || 'lazy'
-if (loading !== 'lazy' && loading !== 'eager') {
-  loading = 'lazy'
-}
-
+if (loading !== 'lazy' && loading !== 'eager') loading = 'lazy'
 </script>
 
 <template>
