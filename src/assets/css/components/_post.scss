@@ -95,7 +95,7 @@
       color: var(--primary-600);
     }
 
-    &:focus {
+    &:focus-visible{
       color: var(--primary-600);
     }
   }
@@ -161,7 +161,7 @@
       }
     }
 
-    &:focus {
+    &:focus-visible{
       @include outline;
     }
 

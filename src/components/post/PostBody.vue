@@ -3,6 +3,7 @@ import { markdownToHtml } from '@/lib/markdown'
 import { useUrlStore } from '@/stores/urlStore'
 import type { Post } from '@/types/discuitTypes'
 import { ref } from 'vue'
+import DiscuitImage from '../DiscuitImage.vue'
 
 const urlStore = useUrlStore()
 const props = defineProps({
@@ -35,11 +36,11 @@ if (post.value.type === 'link') {
 
     <div v-if="image" class="image" @click.stop @keydown.enter.stop role="button">
       <a :href="link.url" target="_blank" v-if="link">
-        <img :src="image" alt="Post image" v-if="link.image" />
+        <DiscuitImage :src="image" alt="Post image" v-if="link.image" />
         <p>Via <span class="hostname">{{ link.hostname }}</span></p>
       </a>
 
-      <img v-else :src="image" alt="Post image" />
+      <DiscuitImage v-else :src="image" alt="Post image" />
 
     </div>
 

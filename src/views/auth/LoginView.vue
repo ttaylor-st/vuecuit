@@ -77,7 +77,7 @@ form {
     border: 1px solid hsla(var(--primary-200) / 1);
     border-radius: 1em;
 
-    &:focus {
+    &:focus-visible{
       outline: none;
       border-color: hsla(var(--primary-300) / 1);
     }

@@ -17,12 +17,18 @@ const logout = async () => {
   if (userStore.error) console.error(userStore.error)
 }
 
+const time = new Date().getHours()
+let greeting = ''
+if (time < 12) greeting = 'Good morning, '
+else if (time < 18) greeting = 'Good afternoon, '
+else greeting = 'Good evening, '
+
 </script>
 
 <template>
   <main>
 
-    <SmallProfile :user="user" v-if="user"/>
+    <SmallProfile :user="user" :usernamePrefix="greeting" v-if="user" />
     <div v-else class="skeleton" style="width: 100%; height: 5rem;"></div>
 
     <hr>
