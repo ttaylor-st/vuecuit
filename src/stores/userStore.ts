@@ -6,7 +6,8 @@ export const useUserStore = defineStore('user', {
     user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
     loading: false,
     error: String,
-    xcsrfToken: localStorage.getItem('csrfToken') || null
+    xcsrfToken: localStorage.getItem('csrfToken') || null,
+    history: []
   }),
 
   actions: {
@@ -126,6 +127,8 @@ export const useUserStore = defineStore('user', {
   },
 
   getters: {
-    isLoggedIn: (state) => state.user !== null
-  }
+    isLoggedIn: (state) => state.user !== null,
+    getHistory: (state) => state.history
+  },
+
 })

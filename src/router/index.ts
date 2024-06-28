@@ -70,10 +70,16 @@ router.beforeEach((to, from, next) => {
   else next()
 })
 
-router.afterEach((to, from) => {
-  const toDepth = to.path.split('/').length
-  const fromDepth = from.path.split('/').length
-  to.meta.transition = toDepth < fromDepth ? 'slide-left' : 'slide-right'
+router.afterEach((to, from, failure) => {
+  if (failure) return console.log(failure)
+
+  const history = useUserStore().getHistory
+  if (history.length === 0) return history.push(from.name)
+  const last = history[history.length - 1]
+
+  if (last !== to.name) to.meta.transition = 'slide-right'
+  else to.meta.transition = 'slide-left'
+  history.push(from.name)
 })
 
 export default router
