@@ -297,3 +297,10 @@ export type FeedItem = {
   type: 'post' | 'comment' // The export type of the feed item.
   item: Post | Comment // The Post or Comment object of the feed item.
 }
+
+export type Link = {
+  url: string // The URL of the link.
+  hostname: string // The hostname of the link. For a URL of "https://discuit.net", this would be "discuit.net".
+  // The image object of the OpenGraph image on the site. If no OpenGraph image was found, this is null.
+  image: Image | null
+}
