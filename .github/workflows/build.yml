@@ -6,6 +6,9 @@ on:
       - android
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
     build:
       runs-on: ubuntu-latest
@@ -41,12 +44,9 @@ jobs:
         - name: Build release APK
           run: cd android && ./gradlew --no-daemon assembleRelease && cd ../
 
-        - name: Find app-release-unsigned.apk and assign to variable
-          run: APK_PATH="$(find . -name app-release-unsigned.apk)"
-
 
         - name: Upload build artifact
           uses: actions/upload-artifact@v3
           with:
             name: release-artifacts
-            path: $APK_PATH
+            path: android/app/build/outputs/apk/release/app-release-unsigned.apk
