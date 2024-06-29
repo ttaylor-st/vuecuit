@@ -33,7 +33,7 @@ const submitForm = async (event: Event) => {
 <template>
   <main>
     <h1>Login</h1>
-    <p>Don't have an account? <a href="https://discuit.com/login">Sign up on Discuit</a></p>
+    <p>Don't have an account? <a href="https://discuit.net/login">Sign up on Discuit</a></p>
 
     <form method="post" @submit="submitForm">
       <div class="form-group">
