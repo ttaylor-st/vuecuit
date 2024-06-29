@@ -16,7 +16,7 @@
     background-color: hsl(var(--primary-200) / 0.5);
   }
 
-  &:active, &:focus, &:focus-within {
+  &:active, &:focus-visible, &:focus-within {
     background-color: hsl(var(--primary-200) / 0.75);
     border: 1px solid hsl(var(--primary-600) / 0.5);
   }
@@ -162,7 +162,7 @@
       }
     }
 
-    &:focus-visible{
+    &:focus-visible {
       @include outline;
     }
 
