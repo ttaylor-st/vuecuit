@@ -1,21 +1,18 @@
 <script lang="ts" setup>
-// TODO: Create a Comment component
-
 import {ref, computed, watch} from 'vue'
 import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
 import { useRoute } from 'vue-router'
-import type { User, FeedItem } from '@/types/discuitTypes'
-import PostComponent from '@/components/post/PostComponent.vue'
+import type { User } from '@/types/discuitTypes'
 import { getProfilePicture } from '@/lib/utils'
 import { markdownToHtml } from '@/lib/markdown'
+import Feed from "@/components/feed/Feed.vue";
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()
 const route = useRoute()
 
 const selectedTab = ref('posts')
-const loading = ref(false)
 
 const username = ref(route.params.username)
 const user = ref<User>()
@@ -27,7 +24,6 @@ const userStats = computed(() => ({
 }))
 const pronouns = ref<string[]>([])
 const profilePicture = ref<string>('')
-const posts = ref<FeedItem[]>([])
 
 const fetchUserData = async () => {
   const fetchedUser = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username.value}`)
@@ -40,19 +36,6 @@ const fetchUserData = async () => {
   profilePicture.value = getProfilePicture(fetchedUserBody)
 }
 
-const fetchUserFeed = async () => {
-  loading.value = true
-  const filter = selectedTab.value === 'overview' ? '' : selectedTab.value
-  const fetchedFeed = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username.value}/feed?filter=${filter}`) || { json: () => [] }
-  const fetchedFeedBody = await fetchedFeed.json()
-  posts.value = fetchedFeedBody.items.filter((item: FeedItem) => item.type === 'post') || []
-  loading.value = false
-}
-
-watch(selectedTab, () => {
-  fetchUserFeed()
-}, { immediate: true })
-
 const formatStat = (key: string, value: number) => {
   if (key === 'posts') return `${value} post${value === 1 ? '' : 's'}`
   if (key === 'comments') return `${value} comment${value === 1 ? '' : 's'}`
@@ -61,13 +44,11 @@ const formatStat = (key: string, value: number) => {
 }
 
 fetchUserData()
-fetchUserFeed()
 </script>
 
 <template>
   <main>
     <section>
-      <!-- Profile Section -->
       <div class="profile">
         <div class="profile__header">
           <div class="profile__avatar">
@@ -97,41 +78,17 @@ fetchUserFeed()
 
     <section v-if="selectedTab === 'posts'">
       <h2>Posts</h2>
-      <div v-if="loading">
-        <p>Loading...</p>
-      </div>
-      <div v-else-if="posts.length > 0" class="posts">
-        <PostComponent v-for="post in (posts || [])" :key="post.item.id" :public-id="post.item.publicId" />
-      </div>
-      <div v-else>
-        <p>No posts to show.</p>
-      </div>
+      <Feed :type="'user'" :username="username" :userType="'posts'" />
     </section>
 
     <section v-else-if="selectedTab === 'comments'">
       <h2>Comments</h2>
-      <div v-if="loading">
-        <p>Loading...</p>
-      </div>
-      <div v-else-if="posts.length > 0" class="posts">
-        <PostComponent v-for="post in (posts || [])" :key="post.item.id" :public-id="post.item.publicId" />
-      </div>
-      <div v-else>
-        <p>No posts to show.</p>
-      </div>
+      <Feed :type="'user'" :username="username" :userType="'comments'" />
     </section>
 
     <section v-else>
       <h2>Overview</h2>
-      <div v-if="posts.length > 0" class="posts">
-        <PostComponent v-for="post in posts" :key="post.item.id" :public-id="post.item.publicId" />
-      </div>
-      <div v-else-if="loading">
-        <p>Loading...</p>
-      </div>
-      <div v-else>
-        <p>Nothing to show.</p>
-      </div>
+      <Feed :type="'user'" :username="username" :userType="'overview'" />
     </section>
   </main>
 </template>

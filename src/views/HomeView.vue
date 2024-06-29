@@ -1,25 +1,9 @@
 <script setup>
-import { ref } from 'vue'
-import { useUserStore } from '@/stores/userStore'
-import { useUrlStore } from '@/stores/urlStore'
-import PostComponent from '@/components/post/PostComponent.vue'
-
-const userStore = useUserStore()
-const urlStore = useUrlStore()
-
-const posts = ref([])
-
-const fetchPosts = await userStore.makeRequest(`${urlStore.apiUrl}/posts`, 'GET')
-const data = await fetchPosts.json()
-posts.value = data.posts
+import Feed from "@/components/feed/Feed.vue";
 </script>
 
 <template>
   <main>
-    <div class="posts">
-      <div v-for="post in posts" :key="post.publicId">
-        <PostComponent :publicId="post.publicId" />
-      </div>
-    </div>
+    <Feed :type="'home'" />
   </main>
 </template>
