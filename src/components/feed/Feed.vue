@@ -61,11 +61,7 @@ const posts = ref<Post[]>([])
 
 async function fetchPosts() {
   if (isFetching.value) return
-  // wait .5s
-  setTimeout(() => {
-  }, 500)
   isFetching.value = true
-  console.log('fetching posts')
 
   if (props.type === 'user') {
     const filter = props.userType === 'overview' ? '' : props.userType
