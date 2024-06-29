@@ -8,11 +8,9 @@ import Footer from '@/components/Footer.vue'
   <Navbar />
 
   <router-view v-slot="{ Component, route }">
-    <suspense>
       <transition mode="out-in" :name="route.meta.transition || 'slide-left'">
         <component :is="Component" :key="route.path" />
       </transition>
-    </suspense>
   </router-view>
 
   <hr />
@@ -22,7 +20,7 @@ import Footer from '@/components/Footer.vue'
 <style scoped>
 .slide-left-enter-active,
 .slide-left-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.2s ease;
 }
 
 .slide-left-enter,
