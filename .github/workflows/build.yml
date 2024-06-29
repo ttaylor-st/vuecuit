@@ -39,14 +39,13 @@ jobs:
           run: bun run build-only
 
         - name: Sync Android platform
-          run: bun cap sync
+          run: bun cap sync android --inline
 
         - name: Build release APK
-          run: cd android && ./gradlew --no-daemon assembleRelease && cd ../
-
+          run: cd android && ./gradlew --no-daemon assembleDebug && cd ../
 
         - name: Upload build artifact
           uses: actions/upload-artifact@v3
           with:
-            name: release-artifacts
-            path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+            name: Debug Build
+            path: android/app/build/outputs/apk/release/debug/app-debug.apk
