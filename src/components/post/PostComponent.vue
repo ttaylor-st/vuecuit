@@ -27,7 +27,7 @@ const post = ref<Post>()
 onMounted(async () => {
   post.value = await userStore
       .makeRequest(`${urlStore.apiUrl}/posts/${publicId.value}`, 'GET')
-      .then((res) => res.json())
+      .then((res) => res.data)
       .catch((err) => console.error(err))
 
   loading.value = false

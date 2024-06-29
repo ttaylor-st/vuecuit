@@ -61,6 +61,9 @@ const posts = ref<Post[]>([])
 
 async function fetchPosts() {
   if (isFetching.value) return
+  // wait .5s
+  setTimeout(() => {
+  }, 500)
   isFetching.value = true
   console.log('fetching posts')
 
@@ -68,7 +71,7 @@ async function fetchPosts() {
     const filter = props.userType === 'overview' ? '' : props.userType
     const url = `${urlStore.apiUrl}/users/${props.username}/feed?filter=${filter}&next=${next.value || ''}`
     const response = await userStore.makeRequest(url, 'GET')
-    const data: Feed = await response.json() || {items: [], next: null}
+    const data: Feed = response.data || {items: [], next: null}
 
     for (const feed of data.items) userFeed.value.push(feed)
     next.value = data.next
@@ -76,14 +79,14 @@ async function fetchPosts() {
   } else if (props.type === 'community') {
     const url = `${urlStore.apiUrl}/posts?communityId=${props.communityId}&sort=${props.sort}&next=${next.value}`
     const response = await userStore.makeRequest(url, 'GET')
-    const data: Posts = await response.json() || {posts: [], next: null}
+    const data: Posts = response.data || {posts: [], next: null}
 
     for (const post of data.posts) posts.value.push(post)
     next.value = data.next
   } else {
     const url = `${urlStore.apiUrl}/posts?sort=${props.sort}&next=${next.value}`
     const response = await userStore.makeRequest(url, 'GET')
-    const data: Posts = await response.json() || {posts: [], next: null}
+    const data: Posts = response.data || {posts: [], next: null}
 
     for (const post of data.posts) posts.value.push(post)
     next.value = data.next
