@@ -1,25 +1,39 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
 const router = useRouter()
+const error = ref(null)
+const loading = ref(false)
 
 const submitForm = async (event: Event) => {
   event.preventDefault()
   const formData = new FormData(event.target as HTMLFormElement)
-  await userStore.login(formData.get('username') as string, formData.get('password') as string)
-}
+  loading.value = true
+  try {
+    const login = await userStore.login(formData.get('username') as string, formData.get('password') as string)
+    if (login.username) {
+      await router.push('/')
+    } else {
+      error.value = 'Invalid username or password'
+    }
+  } catch (error) {
+    loading.value = false
+    console.error(error)
+  }
 
-userStore.$subscribe(() => {
-  if (userStore.isLoggedIn) router.push('/profile')
-})
+  if (loading.value) {
+    loading.value = false
+  }
+}
 </script>
 
 <template>
   <main>
     <h1>Login</h1>
-    <p>Don't have an account? <a href="https://discuit.com/login">Sign up on Discuit</a></p>
+    <p>Don't have an account? <a href="https://discuit.net/login">Sign up on Discuit</a></p>
 
     <form method="post" @submit="submitForm">
       <div class="form-group">
@@ -32,8 +46,9 @@ userStore.$subscribe(() => {
         <input type="password" id="password" name="password" required />
       </div>
 
-      <button type="submit">Login</button>
+      <button type="submit" :disabled="loading">{{ loading ? 'Loading...' : 'Login' }}</button>
     </form>
+    <p v-if="error" class="error">{{ error }}</p>
   </main>
 </template>
 

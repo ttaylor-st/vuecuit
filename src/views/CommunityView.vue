@@ -23,7 +23,7 @@ onMounted(async () => {
   const fetchedCommunity = await userStore.makeRequest(
     `${urlStore.apiUrl}/communities/${communityName}?byName=true`
   )
-  const fetchedCommunityBody = await fetchedCommunity.json()
+  const fetchedCommunityBody = await fetchedCommunity.data
   community.value = fetchedCommunityBody
   createdTime.value = new Date(fetchedCommunityBody.createdAt).toLocaleDateString()
 

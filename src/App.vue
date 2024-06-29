@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { RouterView } from 'vue-router'
 import Navbar from './components/Navbar.vue'
-import Footer from '@/components/Footer.vue'
 </script>
 
 <template>
@@ -12,9 +11,6 @@ import Footer from '@/components/Footer.vue'
         <component :is="Component" :key="route.path" />
       </transition>
   </router-view>
-
-  <hr />
-  <Footer />
 </template>
 
 <style scoped>

@@ -27,7 +27,7 @@ const profilePicture = ref<string>('')
 
 const fetchUserData = async () => {
   const fetchedUser = await userStore.makeRequest(`${urlStore.apiUrl}/users/${username.value}`)
-  const fetchedUserBody = await fetchedUser.json()
+  const fetchedUserBody = await fetchedUser.data
   userStats.value.points = fetchedUserBody.points
   userStats.value.posts = fetchedUserBody.noPosts
   userStats.value.comments = fetchedUserBody.noComments

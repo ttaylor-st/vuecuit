@@ -1,0 +1,59 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+    build:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checking out branch
+          uses: actions/checkout@v3
+
+        - name: Setup Bun
+          uses: oven-sh/setup-bun@v1
+          with:
+            bun-version: latest
+
+        - name: Cache dependencies
+          uses: actions/cache@v2
+          with:
+            path: ~/.gradle/caches
+            key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+            restore-keys: |
+              ${{ runner.os }}-gradle-
+
+        - name: Setup Java
+          uses: actions/setup-java@v3
+          with:
+            distribution: 'temurin'
+            java-version: 17
+
+        - name: Setup Android SDK
+          uses: android-actions/setup-android@v3
+
+        - name: Install dependencies
+          run: bun install
+
+        # TODO: Use `build`
+        - name: Build
+          run: bun run build-only
+
+        - name: Sync Android platform
+          run: bun cap sync android --inline
+
+        - name: Build release APK
+          run: cd android && ./gradlew --no-daemon assembleDebug && cd ../
+
+        - name: Upload build artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: Debug Build
+            path: android/app/build/outputs/apk/debug/app-debug.apk

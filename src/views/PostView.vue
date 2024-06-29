@@ -16,7 +16,7 @@ const comments = ref([])
 onMounted(async () => {
   const fetched = await userStore
       .makeRequest(`${urlStore.apiUrl}/posts/${publicId.value}/comments`, 'GET')
-      .then((res) => res.json())
+      .then((res) => res.data)
       .catch((err) => console.error(err))
 
   comments.value = fetched.comments;
