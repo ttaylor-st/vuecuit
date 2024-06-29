@@ -1,25 +1,37 @@
 <script lang="ts" setup>
 // TODO: Merge CSS of `ProfileView` and `CommunityView`
 
+import { onMounted, ref } from 'vue'
 import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
 import { useRoute } from 'vue-router'
 import { getProfilePicture } from '@/lib/utils'
+import Feed from "@/components/feed/Feed.vue";
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()
 const route = useRoute()
 
 const communityName = route.params.community
+const community = ref({})
+const createdTime = ref('')
+const profilePicture = ref('')
+const loading = ref(true)
 
-const fetchedCommunity = await userStore.makeRequest(
-  `${urlStore.apiUrl}/communities/${communityName}?byName=true`
-)
-const fetchedCommunityBody = await fetchedCommunity.json()
-const community = fetchedCommunityBody
-const createdTime = new Date(fetchedCommunityBody.createdAt).toLocaleDateString()
+onMounted(async () => {
 
-const profilePicture = getProfilePicture(fetchedCommunityBody)
+  const fetchedCommunity = await userStore.makeRequest(
+    `${urlStore.apiUrl}/communities/${communityName}?byName=true`
+  )
+  const fetchedCommunityBody = await fetchedCommunity.json()
+  community.value = fetchedCommunityBody
+  createdTime.value = new Date(fetchedCommunityBody.createdAt).toLocaleDateString()
+
+  profilePicture.value = getProfilePicture(fetchedCommunityBody)
+
+  loading.value = false
+})
+
 </script>
 
 <template>
@@ -53,7 +65,7 @@ const profilePicture = getProfilePicture(fetchedCommunityBody)
 
     <section>
       <h2>Posts</h2>
-      <p>TODO: Display community's posts and allow for filtering.</p>
+      <Feed :community-id="community.id" :type="'community'" v-if="!loading" />
     </section>
   </main>
 </template>
