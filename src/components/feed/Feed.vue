@@ -74,11 +74,11 @@ async function fetchPosts() {
     next.value = data.next
 
   } else if (props.type === 'community') {
-    const url = `${urlStore.apiUrl}/posts?communityId=${props.communityId}?sort=${props.sort}&next=${next.value}`
+    const url = `${urlStore.apiUrl}/posts?communityId=${props.communityId}&sort=${props.sort}&next=${next.value}`
     const response = await userStore.makeRequest(url, 'GET')
     const data: Posts = await response.json() || {posts: [], next: null}
 
-    posts.value.push(data)
+    for (const post of data.posts) posts.value.push(post)
     next.value = data.next
   } else {
     const url = `${urlStore.apiUrl}/posts?sort=${props.sort}&next=${next.value}`
