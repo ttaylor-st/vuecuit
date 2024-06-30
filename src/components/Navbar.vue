@@ -46,7 +46,10 @@ const profilePicture = computed(() => {
   </nav>
 </template>
 
-<style scoped>
+
+<style lang="scss" scoped>
+@import "@/assets/css/mixins";
+
 @keyframes activate_icon {
   0% {
     transform: scale(1) rotate(0deg);
@@ -71,10 +74,10 @@ const profilePicture = computed(() => {
 
   display: flex;
 
-  background-color: hsla(var(--background-100) / 0.6);
+  background-color: hsla(var(--background-100) / 1);
   backdrop-filter: blur(4px);
 
-  border-top: 1px solid hsla(var(--text-200) / 0.5);
+  border-top: 1px solid hsla(var(--text-200) / 1);
   z-index: 1000;
 
   a {
@@ -82,6 +85,7 @@ const profilePicture = computed(() => {
     flex: 1;
     text-decoration: none;
     overflow: hidden;
+    outline: none;
 
     display: flex;
     flex-direction: column;
@@ -91,6 +95,10 @@ const profilePicture = computed(() => {
     filter: grayscale(100%);
 
     transition: 0.3s;
+
+    &:focus-visible {
+      @include outline;
+    }
 
     span {
       position: absolute;
@@ -123,7 +131,6 @@ const profilePicture = computed(() => {
 
       img,
       svg {
-        scale: 1.25;
         animation: activate_icon 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
