@@ -5,7 +5,7 @@ import { useUrlStore } from "@/stores/urlStore";
 import { useRouter } from "vue-router";
 
 import type { Comment } from "@/types/discuitTypes";
-import {timeSince} from "@/lib/utils";
+import {getProfilePicture, timeSince} from "@/lib/utils";
 import {markdownToHtml} from "@/lib/markdown";
 
 const userStore = useUserStore();
@@ -37,7 +37,7 @@ const body = computed(() => {
   <div class="embedded-comment" :class="{ 'is-op': comment.author?.id === op }" :style="{ paddingBottom: comment.children?.length ? '0' : '0.5rem' }">
     <div class="comment-header">
       <div class="comment-user">
-        <img class="comment-user-icon" :src="comment.author?.proPic?.url" />
+        <img class="comment-user-icon" :src="comment.author ? getProfilePicture(comment.author) : ''" alt="User avatar" />
         <span class="comment-user-name">{{ comment.author?.username || "Hidden" }}</span>
       </div>
       <span class="comment-date" :title="humanReadableDate">{{ timeElapsedHuman }}</span>
