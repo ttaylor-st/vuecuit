@@ -16,7 +16,9 @@
   "dependencies": {
     "@biomejs/biome": "^1.7.3",
     "@capacitor/android": "^6.1.0",
+    "@capacitor/app": "^6.0.0",
     "@capacitor/core": "^6.1.0",
+    "install": "^0.13.0",
     "pinia": "^2.1.7",
     "sass": "^1.77.4",
     "vue": "^3.4.21",

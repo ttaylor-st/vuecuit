@@ -6,6 +6,7 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import { App as CapacitorApp } from '@capacitor/app'
 
 const USER_REFRESH_INTERVAL = 5000
 
@@ -31,6 +32,11 @@ function startUserRefresh(): void {
     await useUserStore().fetchUser()
   }, USER_REFRESH_INTERVAL)
 }
+
+void CapacitorApp.addListener('backButton', ({canGoBack}) => {
+  if (!canGoBack) void CapacitorApp.exitApp();
+  else window.history.back();
+});
 
 const app = initializeApp()
 initializeStores()
