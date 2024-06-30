@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { markdownToHtml } from '@/lib/markdown'
 import { useUrlStore } from '@/stores/urlStore'
-import type {Image, Link, Post} from '@/types/discuitTypes'
-import { ref, computed } from 'vue'
+import type {Post} from '@/types/discuitTypes'
+import {ref, onMounted} from 'vue'
 import DiscuitImage from '../DiscuitImage.vue'
 
 const urlStore = useUrlStore()
@@ -17,24 +17,19 @@ const props = defineProps({
   }
 })
 
+const link = ref<string | null>(null)
 const post = ref(props.post)
-const body = computed(() => markdownToHtml(`${post.value?.body?.slice(0, 500)}...`))
+const body = ref<string | null>(null)
+const image = ref<string | null>(null)
 
-const image = computed(() => {
-  if (!post.value) return
-  if (post.value.type === 'image') {
-    if (!post.value.image) return
-    return `${urlStore.url}${post.value.image.url}`
-  }
+onMounted(() => {
   if (post.value.type === 'link') {
-    if (!post.value.link) return
-    const link = post.value.link
-    if (link.image) return `${urlStore.url}${link.image.url}`
+    link.value = post.value.link
+    if (post.value.link.image) image.value = `${urlStore.url}${post.value.link.image.url}`
   }
-})
+  if (post.value.type === 'image') image.value = `${urlStore.url}${post.value.image.url}`
+  if (post.value.body) body.value = markdownToHtml(post.value.body)
 
-const link = computed(() => {
-  if (post.value.type === 'link') return post.value.link
 })
 
 
@@ -43,7 +38,7 @@ const link = computed(() => {
 <template>
   <div class="post-body">
     <h2>{{ post.title }}</h2>
-    <p v-if="fullBody" :style="{ maxHeight: fullBody ? 'none' : 'calc(1.5rem * 3)' }" class="content" v-html="body"></p>
+    <p :style="{ maxHeight: props.fullBody ? 'none' : 'calc(1.5rem * 3)' }" class="content" v-html="body"></p>
 
     <div v-if="image" class="image" @click.stop @keydown.enter.stop role="button">
       <a :href="link.url" target="_blank" v-if="link">

@@ -18,6 +18,10 @@ const props = defineProps({
   publicId: {
     type: String,
     required: true
+  },
+  fullBody: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -43,7 +47,7 @@ const navigateToPost = () => {
   <div class="post" @click="navigateToPost" @keydown.enter="navigateToPost" tabindex="0" role="button"
     aria-label="View post" aria-describedby="post" v-if="!loading">
     <PostHeader :post="post" />
-    <PostBody :post="post" />
+    <PostBody :post="post" :full-body="fullBody" />
     <PostFooter :post="post" />
   </div>
   <div v-else class="post">
