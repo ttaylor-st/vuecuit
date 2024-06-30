@@ -36,10 +36,11 @@ const body = computed(() => {
 
   <div class="embedded-comment" :class="{ 'is-op': comment.author?.id === op }" :style="{ paddingBottom: comment.children?.length ? '0' : '0.5rem' }">
     <div class="comment-header">
-      <div class="comment-user">
+      <RouterLink @click.stop @keydown.stop
+                  class="comment-user" :to="`/profile/${comment.author?.username}`">
         <img class="comment-user-icon" :src="comment.author ? getProfilePicture(comment.author) : ''" alt="User avatar" />
         <span class="comment-user-name">{{ comment.author?.username || "Hidden" }}</span>
-      </div>
+      </RouterLink>
       <span class="comment-date" :title="humanReadableDate">{{ timeElapsedHuman }}</span>
     </div>
     <div class="comment-body" v-html="body"></div>
