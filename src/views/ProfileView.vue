@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import {ref, computed, watch} from 'vue'
-import { useUrlStore } from '@/stores/urlStore'
-import { useUserStore } from '@/stores/userStore'
-import { useRoute } from 'vue-router'
-import type { User } from '@/types/discuitTypes'
-import { getProfilePicture } from '@/lib/utils'
-import { markdownToHtml } from '@/lib/markdown'
+import {ref, computed} from 'vue'
+import {useUrlStore} from '@/stores/urlStore'
+import {useUserStore} from '@/stores/userStore'
+import {useRoute} from 'vue-router'
+import type {User} from '@/types/discuitTypes'
+import {getProfilePicture} from '@/lib/utils'
+import {markdownToHtml} from '@/lib/markdown'
 import Feed from "@/components/feed/Feed.vue";
 
 const userStore = useUserStore()
@@ -52,7 +52,7 @@ fetchUserData()
       <div class="profile">
         <div class="profile__header">
           <div class="profile__avatar">
-            <img :src="profilePicture" alt="Profile Picture" />
+            <img :src="profilePicture" alt="Profile Picture"/>
           </div>
           <div class="profile__user" v-if="user">
             <h1>{{ user.username }}</h1>
@@ -63,33 +63,31 @@ fetchUserData()
               <span>Joined {{ joinTime }}</span>
               <span v-for="pronoun in pronouns" :key="pronoun">{{ pronoun }}</span>
             </div>
-            <p :innerHTML="markdownToHtml(user.aboutMe)" />
+            <p :innerHTML="markdownToHtml(user.aboutMe)"/>
           </div>
         </div>
       </div>
     </section>
 
-      <div class="tabs">
-        <button v-for="tab in (['Posts', 'Comments', 'Overview'] || [])" :key="tab" @click="selectedTab = tab.toLowerCase()"
-          :class="{ 'is-active': selectedTab === tab.toLowerCase() } ">
-          {{ tab }}
-        </button>
-      </div>
+    <div class="tabs">
+      <button v-for="tab in (['Posts', 'Comments', 'Overview'] || [])" :key="tab"
+              @click="selectedTab = tab.toLowerCase()"
+              :class="{ 'is-active': selectedTab === tab.toLowerCase() } ">
+        {{ tab }}
+      </button>
+    </div>
 
-    <section v-if="selectedTab === 'posts'">
-      <h2>Posts</h2>
-      <Feed :type="'user'" :username="username" :userType="'posts'" />
-    </section>
+    <div v-if="selectedTab === 'posts'">
+      <Feed :type="'user'" :username="username" :userType="'posts'"/>
+    </div>
 
-    <section v-else-if="selectedTab === 'comments'">
-      <h2>Comments</h2>
-      <Feed :type="'user'" :username="username" :userType="'comments'" />
-    </section>
+    <div v-else-if="selectedTab === 'comments'">
+      <Feed :type="'user'" :username="username" :userType="'comments'"/>
+    </div>
 
-    <section v-else>
-      <h2>Overview</h2>
-      <Feed :type="'user'" :username="username" :userType="'overview'" />
-    </section>
+    <div v-else>
+      <Feed :type="'user'" :username="username" :userType="'overview'"/>
+    </div>
   </main>
 </template>
 
