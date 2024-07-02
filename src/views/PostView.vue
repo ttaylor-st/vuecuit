@@ -38,13 +38,24 @@ onMounted(async () => {
   comments.value = buildComments(fetchedComments.comments);
   commentCount.value = fetchedComments.comments.length;
   post.value = fetchedPost;
+
+  if (window.location.hash) {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const comment = document.getElementById(window.location.hash.slice(1));
+    if (comment) comment.scrollIntoView({ behavior: 'smooth' });
+  }
 })
+
+window.addEventListener('hashchange', () => {
+  const comment = document.getElementById(window.location.hash.slice(1));
+  if (comment) comment.scrollIntoView({behavior: 'smooth'});
+});
 </script>
 
 <template>
 
   <div style="padding: 1rem;">
-    <PostComponent :publicId="publicId" :post="post" :comments="comments" />
+    <PostComponent :publicId="publicId" :post="post" :comments="comments" :full-body="true"/>
     <section class="comments">
       <h2>{{ commentCount }} Comments</h2>
       <EmbeddedComment v-for="comment in comments" :key="comment.id" :comment="comment" :op="post.author.id" />
