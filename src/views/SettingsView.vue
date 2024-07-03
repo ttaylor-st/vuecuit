@@ -6,6 +6,7 @@ import { ref } from 'vue'
 const urlStore = useUrlStore()
 const userStore = useUserStore()
 
+const csrfToken = ref(userStore.getCsrfToken)
 const baseUrl = ref(urlStore.url)
 const defaultUrl = urlStore.defaultUrl
 
@@ -35,6 +36,18 @@ const saveUrl = async (e: Event) => {
   urlStore.setBaseUrl(baseUrl.value)
   baseUrl.value = urlStore.url
 }
+
+const saveCsrfToken = async (e: Event) => {
+  e.preventDefault()
+
+  if (!csrfToken.value || csrfToken.value === '') {
+    return
+  }
+
+  await userStore.setXcsrfToken(csrfToken.value)
+  csrfToken.value = userStore.getCsrfToken
+}
+
 </script>
 
 <template>
@@ -44,7 +57,7 @@ const saveUrl = async (e: Event) => {
     <h1>Settings</h1>
     <p>Configure Vuecuit to match your needs. </p>
 
-    <section>
+    <section class="advanced">
       <h2>API Settings</h2>
       <p>Configure the API settings for Vuecuit.</p>
 
@@ -64,6 +77,30 @@ const saveUrl = async (e: Event) => {
                   type="reset">Reset</button>
           <button @click="saveUrl"
               type="submit">Save</button>
+        </div>
+      </form>
+
+    </section>
+
+    <section class="advanced">
+      <h2>Cookies</h2>
+      <p>This section allows you to configure the cookies used by Vuecuit. In case signing in does not work, you can
+        manually set the CSRF token and session ID.</p>
+
+      <div class="warning">
+        <p>We recommend that you use the default settings unless you know what you are doing.</p>
+      </div>
+
+      <form>
+        <div class="form-group">
+          <label for="csrftoken">CSRF Token</label>
+          <input type="text" id="csrftoken" name="csrftoken"
+            placeholder="csrf_token" v-model="csrfToken" />
+        </div>
+
+        <div class="form-actions">
+          <button class="secondary" type="reset">Reset</button>
+          <button type="submit" @click="saveCsrfToken">Save</button>
         </div>
       </form>
 

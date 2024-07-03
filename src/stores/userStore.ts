@@ -133,6 +133,7 @@ export const useUserStore = defineStore('user', {
     isLoggedIn: (state) => state.user !== null,
     getHistory: (state) => state.history,
     getUser: (state) => state.user,
+    getCsrfToken: (state) => state.xcsrfToken,
   },
 
 })
