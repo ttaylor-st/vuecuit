@@ -22,11 +22,15 @@ const post = ref(props.post)
 async function vote(upvote: boolean) {
   const vote = {
     method: 'POST',
-    postId: post.value.id,
-    up: upvote
+    data: {
+      postId: post.value.id,
+      up: upvote
+    }
   }
 
-  await userStore.makeRequest(`${urlStore.apiUrl}/_postVote`, vote)
+  const voteResult = await userStore.makeRequest(`${urlStore.apiUrl}/_postVote`, vote)
+  if (voteResult.status !== 200) return console.error('Failed to vote on post')
+  post.value = voteResult.data
 }
 </script>
 
@@ -34,11 +38,13 @@ async function vote(upvote: boolean) {
 
   <div class="post-footer">
     <div class="votes footer-pill" @click.stop>
-      <button class="votes__upvote" @click="vote(true)">
+      <button :class="{ 'votes__upvote': true, 'active': post.userVotedUp }"
+              @click="vote(true)">
         <arrow-up-bold />
       </button>
       <span class="votes__count">{{ post.upvotes - post.downvotes }}</span>
-      <button class="votes__downvote" @click="vote(false)">
+      <button :class="{ 'votes__downvote': true, 'active': post.userVoted && !post.userVotedUp }"
+              @click="vote(false)">
         <arrow-down-bold />
       </button>
     </div>
