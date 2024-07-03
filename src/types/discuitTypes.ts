@@ -2,6 +2,8 @@
 // Thanks :)
 
 export type Comment = {
+  children?: Comment[] // The list of child comments. Vuecuit adds this field itself, it is not returned by the API.
+
   id: string // The ID of the comment.
   postId: string // The ID of the post the comment belongs to.
   postPublicId: string // The public ID of the post the comment belongs to.
