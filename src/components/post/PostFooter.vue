@@ -29,7 +29,7 @@ async function vote(upvote: boolean) {
   }
 
   const voteResult = await userStore.makeRequest(`${urlStore.apiUrl}/_postVote`, vote)
-  if (voteResult.status !== 200) return console.error('Failed to vote on post')
+  if (!voteResult || voteResult.status !== 200) return console.error('Failed to vote on post')
   post.value = voteResult.data
 }
 </script>
