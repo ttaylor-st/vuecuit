@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { markdownToHtml } from '@/lib/markdown'
 import { useUrlStore } from '@/stores/urlStore'
 import type {Post} from '@/types/discuitTypes'
 import {ref, onMounted} from 'vue'
 import DiscuitImage from '../DiscuitImage.vue'
+import Markdown from "@/components/Markdown.vue";
 
 const urlStore = useUrlStore()
 const props = defineProps({
@@ -28,8 +28,6 @@ onMounted(() => {
     if (post.value.link.image) image.value = `${urlStore.url}${post.value.link.image.url}`
   }
   if (post.value.type === 'image') image.value = `${urlStore.url}${post.value.image.url}`
-  if (post.value.body) body.value = markdownToHtml(post.value.body)
-
 })
 
 
@@ -38,7 +36,9 @@ onMounted(() => {
 <template>
   <div class="post-body">
     <h2>{{ post.title }}</h2>
-    <p :style="{ maxHeight: props.fullBody ? 'none' : 'calc(1.5rem * 3)' }" class="content" v-html="body"></p>
+    <div :style="{ maxHeight: props.fullBody ? 'none' : 'calc(1.5rem * 3)' }" class="content">
+      <Markdown :markdown="post.body" v-if="post.body" />
+    </div>
 
     <div v-if="image" class="image" @click.stop @keydown.enter.stop role="button">
       <a :href="link.url" target="_blank" v-if="link">
