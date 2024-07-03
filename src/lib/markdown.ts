@@ -1,3 +1,5 @@
+import CommunityLink from "@/components/CommunityLink.vue";
+
 // TODO: Use new <p> tags for paragraphs
 class MarkdownParser {
   private markdown: string
@@ -78,6 +80,10 @@ class MarkdownParser {
 
     // Remove trailing line breaks
     html = html.replace(/(<br \/>)+$/gim, '')
+
+    // Support linking to communities and users (+communities and @users)
+    html = html.replace(/\+([a-zA-Z0-9_]+)/gim, '<CommunityLink community-name="$1" />');
+    // html = html.replace(/@([a-zA-Z0-9_]+)/gim, '<UserLink name="$1"></UserLink>');
 
     // Prevent script injection
     html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
