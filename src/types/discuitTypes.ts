@@ -345,6 +345,11 @@ export type Badge = {
   type: string // The export type of badge.
 }
 
+export type Feed = {
+  items: FeedItem[]
+  next: string | null
+}
+
 export type FeedItem = {
   type: 'post' | 'comment' // The export type of the feed item.
   item: Post | Comment // The Post or Comment object of the feed item.
