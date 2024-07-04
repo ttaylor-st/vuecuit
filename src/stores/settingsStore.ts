@@ -22,10 +22,10 @@ export const useSettingsStore = defineStore('settings', {
         },
 
         setTheme(theme: string) {
-            const currentTheme = `${this.theme}-theme`
+            const currentTheme = this.theme.endsWith('-theme') ? this.theme : `${this.theme}-theme`
             this.theme = `${theme}-theme`
             document.getElementById('app')?.classList.remove(currentTheme)
-            document.getElementById('app')?.classList.add(this.theme)
+            document.getElementById('app')?.classList.add(`${theme}-theme`)
         },
 
         setFirstTime() {
