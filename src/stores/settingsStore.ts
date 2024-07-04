@@ -11,12 +11,21 @@ export const useSettingsStore = defineStore('settings', {
     actions: {
         toggleDarkMode() {
             this.darkMode = !this.darkMode
-            document.getElementById('app')?.classList.toggle('dark', this.darkMode)
+            if (this.darkMode) {
+                document.getElementById('app')?.classList.add('dark')
+                document.getElementById('app')?.classList.remove('light')
+            }
+            else {
+                document.getElementById('app')?.classList.add('light')
+                document.getElementById('app')?.classList.remove('dark')
+            }
         },
 
         setTheme(theme: string) {
-            this.theme = theme
-            document.getElementById('app')?.classList.toggle('oled', this.theme === 'oled')
+            const currentTheme = `${this.theme}-theme`
+            this.theme = `${theme}-theme`
+            document.getElementById('app')?.classList.remove(currentTheme)
+            document.getElementById('app')?.classList.add(this.theme)
         },
 
         setFirstTime() {
