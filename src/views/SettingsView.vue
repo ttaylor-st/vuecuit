@@ -14,6 +14,8 @@ const defaultUrl = urlStore.defaultUrl
 
 const isDarkMode = ref(settingsStore.isDarkMode)
 const theme = ref(settingsStore.getTheme)
+const themes = [{ name: 'Default', value: 'default' }, { name: 'OLED', value: 'oled' }]
+
 const saveUrl = async (e: Event) => {
   e.preventDefault()
 
@@ -53,7 +55,7 @@ const saveCsrfToken = async (e: Event) => {
 }
 
 const changeTheme = async (to: string) => {
-  settingsStore.setTheme(to)
+  settingsStore.setTheme(to.toLowerCase())
   theme.value = settingsStore.getTheme
 }
 
@@ -81,27 +83,22 @@ const toggleDarkMode = async () => {
       </div>
 
       <div class="theme-carousel" v-if="isDarkMode">
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'default-theme' }" @click="changeTheme('default')">
-          <img src="/src/assets/img/themes/dark-default.png" alt="Dark Default Theme" />
-          <p>Default</p>
-        </div>
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'oled-theme' }" @click="changeTheme('oled')">
-          <img src="/src/assets/img/themes/dark-oled.png" alt="Dark Default Theme" />
-          <p>OLED</p>
+        <div v-for="thisTheme in themes" :key="thisTheme.value"
+          :class="{ 'theme-carousel__item': true, active: thisTheme.value + `-theme` === theme }"
+          @click="changeTheme(thisTheme.value)">
+          <img :src="`/src/assets/img/themes/dark-${thisTheme.value}.png`" :alt="`${thisTheme.name} Theme`" />
+          <p>{{ thisTheme.name }}</p>
         </div>
       </div>
 
       <div class="theme-carousel" v-else>
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'default-theme' }" @click="changeTheme('default')">
-          <img src="/src/assets/img/themes/light-default.png" alt="Light Default Theme" />
-          <p>Default</p>
-        </div>
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'oled-theme' }" @click="changeTheme('oled')">
-          <img src="/src/assets/img/themes/light-oled.png" alt="Light Default Theme" />
-          <p>OLED</p>
+        <div v-for="thisTheme in themes" :key="thisTheme.value"
+          :class="{ 'theme-carousel__item': true, active: thisTheme.value + `-theme` === theme }"
+          @click="changeTheme(thisTheme.value)">
+          <img :src="`/src/assets/img/themes/light-${thisTheme.value}.png`" :alt="`${thisTheme.name} Theme`" />
+          <p>{{ thisTheme.name }}</p>
         </div>
       </div>
-
     </section>
 
 

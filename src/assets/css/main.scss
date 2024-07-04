@@ -294,6 +294,11 @@ b, strong {
     }
   }
 
+  &.tabs-inline {
+    padding: 0;
+    background-color: transparent;
+  }
+
 }
 
 .skeleton {
