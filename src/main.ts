@@ -2,6 +2,7 @@ import 'vue-material-design-icons/styles.css'
 import './assets/css/main.scss'
 import { useUrlStore } from '@/stores/urlStore'
 import { useUserStore } from '@/stores/userStore'
+import { useSettingsStore } from '@/stores/settingsStore'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -16,7 +17,26 @@ function initializeApp(): ReturnType<typeof createApp> {
   app.use(router)
   app.provide('urlStore', useUrlStore())
   app.provide('userStore', useUserStore())
+  app.provide('settingsStore', useSettingsStore())
   return app
+}
+
+function initializeTheme() {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isFirstTime = settingsStore.isFirstTime;
+
+  if (isFirstTime) {
+    settingsStore.setFirstTime();
+    if (prefersDark) settingsStore.toggleDarkMode();
+  }
+
+  const isDarkMode = settingsStore.isDarkMode;
+  const theme = settingsStore.getTheme;
+
+  if (appElement) {
+    appElement.classList.add(isDarkMode ? 'dark' : 'light');
+    appElement.classList.add(`${theme}-theme`);
+  }
 }
 
 async function initializeStores(): Promise<void> {
@@ -38,7 +58,15 @@ void CapacitorApp.addListener('backButton', ({canGoBack}) => {
   else window.history.back();
 });
 
-const app = initializeApp()
-initializeStores()
-startUserRefresh()
-app.mount('#app')
+const app = initializeApp();
+const settingsStore = useSettingsStore();
+const appElement = document.getElementById('app');
+
+initializeStores();
+startUserRefresh();
+initializeTheme();
+app.mount('#app');
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  settingsStore.toggleDarkMode();
+});
