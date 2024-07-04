@@ -1,0 +1,124 @@
+// https://www.realtimecolors.com/?colors=f5d6dc-0c0304-e797a0-83601f-cfbc31&fonts=Inter-Inter
+#app.light.oled-theme {
+  --text-50: 343 69% 95%;
+  --text-100: 345 69% 90%;
+  --text-200: 345 71% 80%;
+  --text-300: 345 70% 70%;
+  --text-400: 345 70% 60%;
+  --text-500: 345 70% 50%;
+  --text-600: 345 70% 40%;
+  --text-700: 345 70% 30%;
+  --text-800: 345 71% 20%;
+  --text-900: 345 69% 10%;
+  --text-950: 347 69% 5%;
+
+  --background-50: 0 0% 95%;
+  --background-100: 0 0% 90%;
+  --background-200: 0 0% 80%;
+  --background-300: 0 0% 70%;
+  --background-400: 0 0% 60%;
+  --background-500: 0 0% 50%;
+  --background-600: 0 0% 40%;
+  --background-700: 0 0% 30%;
+  --background-800: 0 0% 20%;
+  --background-900: 0 0% 10%;
+  --background-950: 0 0% 0%;
+
+  --primary-50: 340 69% 95%;
+  --primary-100: 343 69% 90%;
+  --primary-200: 342 69% 80%;
+  --primary-300: 342 69% 70%;
+  --primary-400: 342 69% 60%;
+  --primary-500: 342 69% 50%;
+  --primary-600: 342 69% 40%;
+  --primary-700: 342 69% 30%;
+  --primary-800: 342 69% 20%;
+  --primary-900: 343 69% 10%;
+  --primary-950: 343 69% 5%;
+
+  --secondary-50: 177 69% 95%;
+  --secondary-100: 175 69% 90%;
+  --secondary-200: 175 69% 80%;
+  --secondary-300: 175 69% 70%;
+  --secondary-400: 175 69% 60%;
+  --secondary-500: 175 69% 50%;
+  --secondary-600: 175 69% 40%;
+  --secondary-700: 175 69% 30%;
+  --secondary-800: 175 69% 20%;
+  --secondary-900: 175 69% 10%;
+  --secondary-950: 173 69% 5%;
+
+  --accent-50: 240 69% 95%;
+  --accent-100: 240 69% 90%;
+  --accent-200: 240 71% 80%;
+  --accent-300: 240 70% 70%;
+  --accent-400: 240 70% 60%;
+  --accent-500: 240 70% 50%;
+  --accent-600: 240 70% 40%;
+  --accent-700: 240 70% 30%;
+  --accent-800: 240 71% 20%;
+  --accent-900: 240 69% 10%;
+  --accent-950: 240 69% 5%;
+}
+
+#app.dark.oled-theme {
+  --text-50: 347 69% 5%;
+  --text-100: 345 69% 10%;
+  --text-200: 345 71% 20%;
+  --text-300: 345 70% 30%;
+  --text-400: 345 70% 40%;
+  --text-500: 345 70% 50%;
+  --text-600: 345 70% 60%;
+  --text-700: 345 70% 70%;
+  --text-800: 345 71% 80%;
+  --text-900: 345 69% 90%;
+  --text-950: 343 69% 95%;
+
+  --background-50: 0 0% 0%;
+  --background-100: 0 0% 5%;
+  --background-200: 0 0% 10%;
+  --background-300: 0 0% 30%;
+  --background-400: 0 0% 40%;
+  --background-500: 0 0% 50%;
+  --background-600: 0 0% 60%;
+  --background-700: 0 0% 70%;
+  --background-800: 0 0% 80%;
+  --background-900: 0 0% 90%;
+  --background-950: 0 0% 95%;
+
+  --primary-50: 343 69% 5%;
+  --primary-100: 343 69% 10%;
+  --primary-200: 342 69% 20%;
+  --primary-300: 342 69% 30%;
+  --primary-400: 342 69% 40%;
+  --primary-500: 342 69% 50%;
+  --primary-600: 342 69% 60%;
+  --primary-700: 342 69% 70%;
+  --primary-800: 342 69% 80%;
+  --primary-900: 343 69% 90%;
+  --primary-950: 340 69% 95%;
+
+  --secondary-50: 173 69% 5%;
+  --secondary-100: 175 69% 10%;
+  --secondary-200: 175 69% 20%;
+  --secondary-300: 175 69% 30%;
+  --secondary-400: 175 69% 40%;
+  --secondary-500: 175 69% 50%;
+  --secondary-600: 175 69% 60%;
+  --secondary-700: 175 69% 70%;
+  --secondary-800: 175 69% 80%;
+  --secondary-900: 175 69% 90%;
+  --secondary-950: 177 69% 95%;
+
+  --accent-50: 240 69% 5%;
+  --accent-100: 240 69% 10%;
+  --accent-200: 240 71% 20%;
+  --accent-300: 240 70% 30%;
+  --accent-400: 240 70% 40%;
+  --accent-500: 240 70% 50%;
+  --accent-600: 240 70% 60%;
+  --accent-700: 240 70% 70%;
+  --accent-800: 240 71% 80%;
+  --accent-900: 240 69% 90%;
+  --accent-950: 240 69% 95%;
+}
