@@ -15,9 +15,13 @@ const router = useRouter()
 
 const loading = ref(true)
 const props = defineProps({
+  post: {
+    type: Object as () => Post,
+    default: null
+  },
   publicId: {
     type: String,
-    required: true
+    default: null
   },
   fullBody: {
     type: Boolean,
@@ -29,6 +33,19 @@ const publicId = ref(props.publicId)
 const post = ref<Post>()
 
 onMounted(async () => {
+
+  if (props.post) {
+    post.value = props.post
+    loading.value = false
+    return
+  }
+
+  if (!publicId.value) {
+    console.error('PostComponent: No post or publicId provided')
+    return
+  }
+
+  loading.value = true
   post.value = await userStore
       .makeRequest(`${urlStore.apiUrl}/posts/${publicId.value}`, 'GET')
       .then((res) => res.data)
@@ -39,7 +56,7 @@ onMounted(async () => {
 
 
 const navigateToPost = () => {
-  router.push(`/post/${publicId.value}`)
+  router.push(`/post/${post.value.publicId}`)
 }
 </script>
 

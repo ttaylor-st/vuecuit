@@ -18,7 +18,12 @@ const humanReadableDate = new Date(post.value.createdAt).toLocaleString()
 const author = post.value.author
 const authorProfilePicture = getProfilePicture(author)
 
-const community = post.value.community
+const community = {
+  name: post.value.communityName,
+  proPic: post.value.communityProPic,
+  banner: post.value.communityBannerImage,
+  id: post.value.communityId
+}
 const communityProfilePicture = getProfilePicture(community)
 </script>
 
@@ -26,9 +31,9 @@ const communityProfilePicture = getProfilePicture(community)
 
   <div class="post-header">
     <RouterLink @click.stop @keydown.stop
-      class="post-header__community" :to="`/community/${post.community.name}`">
+      class="post-header__community" :to="`/community/${community.name}`">
       <img :src="`${communityProfilePicture}`" alt="community image" />
-      <span>{{ post.community.name }}</span>
+      <span>{{ community.name }}</span>
     </RouterLink>
 
     <RouterLink @click.stop @keydown.stop
