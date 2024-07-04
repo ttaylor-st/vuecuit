@@ -35,7 +35,7 @@ function initializeTheme() {
 
   if (appElement) {
     appElement.classList.add(isDarkMode ? 'dark' : 'light');
-    appElement.classList.add(`${theme}-theme`);
+    appElement.classList.add(`${theme}`);
   }
 }
 

@@ -54,7 +54,6 @@ const saveCsrfToken = async (e: Event) => {
 }
 
 const changeTheme = async (theme: string) => {
-  console.log(theme)
   settingsStore.setTheme(theme)
 }
 
@@ -82,24 +81,24 @@ const toggleDarkMode = async () => {
       </div>
 
       <div class="theme-carousel" v-if="isDarkMode">
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'default' }">
+        <div :class="{ 'theme-carousel__item': true, active: theme === 'default' }" @click="changeTheme('default')">
           <img src="/src/assets/img/themes/dark-default.png" alt="Dark Default Theme" />
-          <button @click="changeTheme('default')">Default</button>
+          <p>Default</p>
         </div>
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'default' }">
+        <div :class="{ 'theme-carousel__item': true, active: theme === 'oled' }" @click="changeTheme('oled')">
           <img src="/src/assets/img/themes/dark-oled.png" alt="Dark Default Theme" />
-          <button @click="changeTheme('oled')">OLED</button>
+          <p>OLED</p>
         </div>
       </div>
 
       <div class="theme-carousel" v-else>
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'default' }">
+        <div :class="{ 'theme-carousel__item': true, active: theme === 'default' }" @click="changeTheme('default')">
           <img src="/src/assets/img/themes/light-default.png" alt="Light Default Theme" />
-          <button @click="changeTheme('default')">Default</button>
+          <p>Default</p>
         </div>
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'default' }">
+        <div :class="{ 'theme-carousel__item': true, active: theme === 'oled' }" @click="changeTheme('oled')">
           <img src="/src/assets/img/themes/light-oled.png" alt="Light Default Theme" />
-          <button @click="changeTheme('oled')">OLED</button>
+          <p>OLED</p>
         </div>
       </div>
 
@@ -164,7 +163,6 @@ const toggleDarkMode = async () => {
   button {
     padding: 0.5rem 1rem;
     font-size: 1rem;
-    border: none;
     border-radius: 0.25rem;
     cursor: pointer;
   }
@@ -182,19 +180,25 @@ const toggleDarkMode = async () => {
 
       border-radius: 1rem;
       padding: 0.5rem;
+      border: 2px solid hsla(var(--background-200) / 0.5);
       background-color: hsla(var(--background-200) / 0.5);
 
       &.active {
+        scale: 1;
         background-color: hsla(var(--background-200) / 1);
+        border: 2px solid hsla(var(--accent-200) / 1);
+      }
+
+      img {
+        max-height: 512px;
+        border-radius: 1rem;
+      }
+
+      p {
+        text-align: center;
       }
 
     }
-
-    .theme-carousel__item img {
-      max-height: 512px;
-      border-radius: 1rem;
-    }
-
   }
 
 

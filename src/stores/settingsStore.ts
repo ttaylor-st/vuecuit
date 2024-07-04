@@ -3,9 +3,9 @@ import {defineStore} from "pinia";
 export const useSettingsStore = defineStore('settings', {
 
     state: () => ({
-        firstTime: true,
-        darkMode: false,
-        theme: 'default',
+        firstTime: localStorage.getItem('firstTime') !== 'false' || false,
+        darkMode: localStorage.getItem('darkMode') === 'true',
+        theme: localStorage.getItem('theme') || 'default',
     }),
 
     actions: {
@@ -19,6 +19,7 @@ export const useSettingsStore = defineStore('settings', {
                 document.getElementById('app')?.classList.add('light')
                 document.getElementById('app')?.classList.remove('dark')
             }
+            localStorage.setItem('darkMode', this.darkMode.toString())
         },
 
         setTheme(theme: string) {
@@ -26,10 +27,12 @@ export const useSettingsStore = defineStore('settings', {
             this.theme = `${theme}-theme`
             document.getElementById('app')?.classList.remove(currentTheme)
             document.getElementById('app')?.classList.add(`${theme}-theme`)
+            localStorage.setItem('theme', this.theme)
         },
 
         setFirstTime() {
             this.firstTime = false
+            localStorage.setItem('firstTime', 'false')
         },
     },
 
