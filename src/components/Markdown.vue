@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import CommunityLink from "@/components/CommunityLink.vue";
 
 const props = defineProps({
   markdown: {
