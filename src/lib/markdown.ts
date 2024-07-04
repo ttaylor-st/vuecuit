@@ -1,5 +1,3 @@
-import CommunityLink from "@/components/CommunityLink.vue";
-
 // TODO: Use new <p> tags for paragraphs
 class MarkdownParser {
   private markdown: string
