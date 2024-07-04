@@ -13,8 +13,7 @@ const baseUrl = ref(urlStore.url)
 const defaultUrl = urlStore.defaultUrl
 
 const isDarkMode = ref(settingsStore.isDarkMode)
-const theme = ref(settingsStore.theme)
-
+const theme = ref(settingsStore.getTheme)
 const saveUrl = async (e: Event) => {
   e.preventDefault()
 
@@ -53,8 +52,9 @@ const saveCsrfToken = async (e: Event) => {
   csrfToken.value = userStore.getCsrfToken
 }
 
-const changeTheme = async (theme: string) => {
-  settingsStore.setTheme(theme)
+const changeTheme = async (to: string) => {
+  settingsStore.setTheme(to)
+  theme.value = settingsStore.getTheme
 }
 
 const toggleDarkMode = async () => {
@@ -81,22 +81,22 @@ const toggleDarkMode = async () => {
       </div>
 
       <div class="theme-carousel" v-if="isDarkMode">
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'default' }" @click="changeTheme('default')">
+        <div :class="{ 'theme-carousel__item': true, active: theme === 'default-theme' }" @click="changeTheme('default')">
           <img src="/src/assets/img/themes/dark-default.png" alt="Dark Default Theme" />
           <p>Default</p>
         </div>
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'oled' }" @click="changeTheme('oled')">
+        <div :class="{ 'theme-carousel__item': true, active: theme === 'oled-theme' }" @click="changeTheme('oled')">
           <img src="/src/assets/img/themes/dark-oled.png" alt="Dark Default Theme" />
           <p>OLED</p>
         </div>
       </div>
 
       <div class="theme-carousel" v-else>
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'default' }" @click="changeTheme('default')">
+        <div :class="{ 'theme-carousel__item': true, active: theme === 'default-theme' }" @click="changeTheme('default')">
           <img src="/src/assets/img/themes/light-default.png" alt="Light Default Theme" />
           <p>Default</p>
         </div>
-        <div :class="{ 'theme-carousel__item': true, active: theme === 'oled' }" @click="changeTheme('oled')">
+        <div :class="{ 'theme-carousel__item': true, active: theme === 'oled-theme' }" @click="changeTheme('oled')">
           <img src="/src/assets/img/themes/light-oled.png" alt="Light Default Theme" />
           <p>OLED</p>
         </div>
