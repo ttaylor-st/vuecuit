@@ -78,9 +78,8 @@ export const useFeedStore = defineStore('feed', {
       }
     },
     setScrollPosition(feedKey: string, scrollPosition: number) {
-      if (scrollPosition === 0) return
+      if (scrollPosition < 250) return
       if (this[feedKey]) {
-        console.log('setting scroll position to', scrollPosition)
         this[feedKey].scrollPosition = scrollPosition
       }
     }
