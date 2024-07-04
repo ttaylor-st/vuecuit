@@ -15,7 +15,7 @@ const props = defineProps({
 
 <template>
   <div>
-    <PostComponent v-if="item.type === 'post'" :public-id="item.item.publicId" />
+    <PostComponent v-if="item.type === 'post'" :post="item.item" />
     <EmbeddedComment v-else-if="item.type === 'comment'" :comment="item.item" />
   </div>
 </template>

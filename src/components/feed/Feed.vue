@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import type { Comment, Post } from '@/types/discuitTypes'
-
-import { defineProps, ref, onUnmounted, onMounted } from 'vue'
-import {useUserStore} from "@/stores/userStore";
-import {useUrlStore} from "@/stores/urlStore";
+import { defineProps, onUnmounted, onMounted, computed, nextTick, ref } from 'vue'
+import { useUserStore } from "@/stores/userStore"
+import { useUrlStore } from "@/stores/urlStore"
+import { useFeedStore } from "@/stores/feedStore"
 
 import PostComponent from '@/components/post/PostComponent.vue'
-import EmbeddedComment from '@/components/comments/EmbeddedComment.vue'
 import FeedItem from '@/components/feed/FeedItem.vue'
 
 const props = defineProps({
@@ -18,7 +16,6 @@ const props = defineProps({
     type: String,
     required: false
   },
-  // "user", "community", "home"
   type: {
     type: String,
     required: true,
@@ -35,95 +32,101 @@ const props = defineProps({
     default: 'overview'
   }
 })
-const next = ref<string | null>(null)
-const isFetching = ref(false)
+
+const initTime = new Date().getTime()
 
 const userStore = useUserStore()
 const urlStore = useUrlStore()
+const feedStore = useFeedStore()
 
-type FeedItem = {
-  type: string,
-  item: Post | Comment
-}
+const feedKey = computed(() => {
+  if (props.type === 'user') return `user-${props.username}-${props.userType}`
+  if (props.type === 'community') return `community-${props.communityId}-${props.sort}`
+  return `home-${props.sort}`
+})
 
-type Feed = {
-  items: FeedItem[]
-  next: string | null
-}
+const currentFeed = computed(() => feedStore[feedKey.value])
 
-type Posts = {
-  posts: Post[]
-  next: string | null
-}
+const isInitialized = ref(false)
 
-const userFeed = ref<Feed[]>([])
-const posts = ref<Post[]>([])
+feedStore.initializeFeed(feedKey.value, {
+  type: props.type,
+  sort: props.sort,
+  username: props.username,
+  communityId: props.communityId,
+  userType: props.userType
+})
 
 async function fetchPosts() {
-  if (isFetching.value) return
-  isFetching.value = true
+  if (currentFeed.value.isFetching) return
+  feedStore.setIsFetching(feedKey.value, true)
 
-  if (props.type === 'user') {
-    const filter = props.userType === 'overview' ? '' : props.userType
-    const url = `${urlStore.apiUrl}/users/${props.username}/feed?filter=${filter}&next=${next.value || ''}`
+  if (currentFeed.value.type === 'user') {
+    const filter = currentFeed.value.userType === 'overview' ? '' : currentFeed.value.userType
+    const url = `${urlStore.apiUrl}/users/${currentFeed.value.username}/feed?filter=${filter}&next=${currentFeed.value.next || ''}`
     const response = await userStore.makeRequest(url, 'GET')
-    const data: Feed = response.data || {items: [], next: null}
+    const data = response.data || {items: [], next: null}
 
-    for (const feed of data.items) userFeed.value.push(feed)
-    next.value = data.next
-
-  } else if (props.type === 'community') {
-    const url = `${urlStore.apiUrl}/posts?communityId=${props.communityId}&sort=${props.sort}&next=${next.value}`
-    const response = await userStore.makeRequest(url, 'GET')
-    const data: Posts = response.data || {posts: [], next: null}
-
-    for (const post of data.posts) posts.value.push(post)
-    next.value = data.next
+    feedStore.addUserFeedItems(feedKey.value, data.items)
+    feedStore.setNext(feedKey.value, data.next)
   } else {
-    const url = `${urlStore.apiUrl}/posts?sort=${props.sort}&next=${next.value}`
+    const url = currentFeed.value.type === 'community'
+      ? `${urlStore.apiUrl}/posts?communityId=${currentFeed.value.communityId}&sort=${currentFeed.value.sort}&next=${currentFeed.value.next}`
+      : `${urlStore.apiUrl}/posts?sort=${currentFeed.value.sort}&next=${currentFeed.value.next}`
     const response = await userStore.makeRequest(url, 'GET')
-    const data: Posts = response.data || {posts: [], next: null}
+    const data = response.data || {posts: [], next: null}
 
-    for (const post of data.posts) posts.value.push(post)
-    next.value = data.next
+    feedStore.addPosts(feedKey.value, data.posts)
+    feedStore.setNext(feedKey.value, data.next)
   }
 
-  isFetching.value = false
-
+  feedStore.setIsFetching(feedKey.value, false)
 }
 
 function isBottom() {
   return window.innerHeight + window.scrollY >= document.body.offsetHeight - 1080
 }
 
-onMounted(() => {
-  fetchPosts()
+function saveScrollPosition() {
+  if (window.scrollY === 0 || initTime > new Date().getTime() - 500) return
+  feedStore.setScrollPosition(feedKey.value, window.scrollY)
+}
+
+function restoreScrollPosition() {
+  nextTick(() => {
+    window.scrollTo(0, currentFeed.value.scrollPosition)
+  })
+}
+
+onMounted(async () => {
+  if (currentFeed.value.posts.length === 0 && currentFeed.value.items.length === 0) {
+    await fetchPosts()
+  }
+
+  restoreScrollPosition()
+  isInitialized.value = true
 
   window.addEventListener('scroll', () => {
     if (isBottom()) fetchPosts()
+    if (isInitialized.value) saveScrollPosition()
   })
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', () => {
     if (isBottom()) fetchPosts()
+    if (isInitialized.value) saveScrollPosition()
   })
 });
 
 </script>
 
 <template>
-
-  <div class="feed" v-if="props.type === 'home' || props.type === 'community' && posts.length > 0">
-    <PostComponent v-for="post in posts" :key="post.publicId" :publicId="post.publicId" />
+  <div class="feed" v-if="currentFeed.type === 'home' || currentFeed.type === 'community' && currentFeed.posts.length > 0">
+    <PostComponent v-for="post in currentFeed.posts" :key="post.publicId" :post="post" />
   </div>
 
-  <div class="feed" v-else-if="props.type === 'user' && userFeed.length > 0">
-    <FeedItem v-for="feed in userFeed" :key="feed.item.publicId" :item="feed" />
+  <div class="feed" v-else-if="currentFeed.type === 'user' && currentFeed.items.length > 0">
+    <FeedItem v-for="feed in currentFeed.items" :key="feed.item.publicId" :item="feed" />
   </div>
-
 </template>
-
-<style scoped>
-
-</style>
