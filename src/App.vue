@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { RouterView } from 'vue-router'
 import Navbar from './components/Navbar.vue'
+import TopBar from "@/components/TopBar.vue";
 </script>
 
 <template>
+  <TopBar />
   <Navbar />
+  <div style="margin-bottom: 4rem;"></div>
 
   <router-view v-slot="{ Component, route }">
       <transition mode="out-in" :name="route.meta.transition || 'slide-left'">
