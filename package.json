@@ -10,8 +10,9 @@
     "test:unit": "vitest",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
-    "lint": "biome lint ./src",
-    "format": "biome format --write ./src"
+    "biome:check": "bunx biome check --staged src/",
+    "biome:lint": "bunx biome lint ./src",
+    "biome:format": "bunx biome format --staged --write ./src"
   },
   "dependencies": {
     "@biomejs/biome": "^1.7.3",
