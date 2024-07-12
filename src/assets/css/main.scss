@@ -1,5 +1,5 @@
-@import 'base.scss';
-@import 'components/components.scss';
+@import "base.scss";
+@import "components/components.scss";
 
 #app {
   font-weight: normal;
@@ -13,12 +13,16 @@ a {
   transition: 0.4s;
 }
 
-a, button, input, select, textarea {
+a,
+button,
+input,
+select,
+textarea {
   &:focus-within {
     @include outline-secondary;
   }
 
-  &:focus-visible{
+  &:focus-visible {
     @include outline;
   }
 }
@@ -41,65 +45,68 @@ form {
 
   label {
     font-weight: bold;
+  }
+}
 
+input,
+select,
+textarea {
+  font-family: inherit;
+  background-color: hsla(var(--background-200) / 0.75);
+  color: hsla(var(--text-950) / 1);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid hsla(var(--background-300) / 1);
+  outline: none;
+  resize: none;
+  min-height: 100px;
+  transition: 0.2s;
+
+  &:hover {
+    border: 1px solid hsla(var(--background-400) / 1);
   }
 
-  input, select, textarea {
-    background-color: hsla(var(--background-200) / 0.75);
-    color: hsla(var(--text-950) / 1);
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid hsla(var(--background-300) / 1);
-    transition: background-color 0.2s;
+  &:focus-visible {
+    outline: none;
+    border: 1px solid hsla(var(--primary-600) / 1);
+  }
 
-    &:focus-visible{
-      @include outline;
-      background-color: hsla(var(--background-300) / 1);
-    }
+  &::placeholder {
+    color: hsla(var(--text-700) / 1);
+  }
+}
+
+button {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid hsla(var(--background-300) / 0);
+  color: hsla(var(--text-950) / 1);
+  font-weight: bold;
+  transition: background-color 0.2s;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background-color: hsla(var(--background-300) / 1);
+    border: 1px solid hsla(var(--background-300) / 1);
+  }
+
+  &.secondary {
+    background-color: hsla(var(--secondary-500) / 1);
 
     &:hover {
-      background-color: hsla(var(--background-300) / 1);
+      background-color: hsla(var(--secondary-600) / 1);
     }
-
-    &::placeholder {
-      color: hsla(var(--text-700) / 1);
-    }
-
   }
+}
 
-  button {
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid hsla(var(--background-300) / 0);
-    color: hsla(var(--text-950) / 1);
-    font-weight: bold;
-    transition: background-color 0.2s;
-
-    &:focus-visible{
-      outline: none;
-    }
-
-    &:hover, &:focus-visible{
-      background-color: hsla(var(--background-300) / 1);
-      border: 1px solid hsla(var(--background-300) / 1);
-    }
-
-    &.secondary {
-      background-color: hsla(var(--secondary-500) / 1);
-
-      &:hover {
-        background-color: hsla(var(--secondary-600) / 1);
-      }
-    }
-
-  }
-
-
-  .form-actions {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-  }
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
 }
 
 div.warning {
@@ -112,7 +119,6 @@ div.warning {
   p {
     font-style: italic;
   }
-
 }
 
 main {
@@ -146,12 +152,17 @@ hr {
   --R: calc(var(--size) * sqrt(var(--m) * var(--m) + 1) + var(--b) / 2);
 
   --_g: #0000 calc(99% - var(--b)), #000 calc(101% - var(--b)) 99%, #0000 101%;
-  -webkit-mask: radial-gradient(var(--R) at left 50% bottom calc(-1 * var(--p)), var(--_g)) calc(50% - 2 * var(--size)) calc(50% - var(--size) / 2 - var(--b) / 2) / calc(4 * var(--size)) calc(var(--size) + var(--b)) repeat-x,
-  radial-gradient(var(--R) at left 50% top calc(-1 * var(--p)), var(--_g)) 50% calc(50% + var(--size) / 2 + var(--b) / 2) / calc(4 * var(--size)) calc(var(--size) + var(--b)) repeat-x;
+  -webkit-mask:
+    radial-gradient(var(--R) at left 50% bottom calc(-1 * var(--p)), var(--_g))
+      calc(50% - 2 * var(--size)) calc(50% - var(--size) / 2 - var(--b) / 2) /
+      calc(4 * var(--size)) calc(var(--size) + var(--b)) repeat-x,
+    radial-gradient(var(--R) at left 50% top calc(-1 * var(--p)), var(--_g)) 50%
+      calc(50% + var(--size) / 2 + var(--b) / 2) / calc(4 * var(--size))
+      calc(var(--size) + var(--b)) repeat-x;
   background: linear-gradient(
-                  90deg,
-                  hsla(var(--primary-800) / 0.75),
-                  hsla(var(--primary-800) / 0.75)
+    90deg,
+    hsla(var(--primary-800) / 0.75),
+    hsla(var(--primary-800) / 0.75)
   );
   height: 8px;
 }
@@ -198,11 +209,12 @@ pre:has(code) {
 }
 
 code {
-  font-family: 'Fira Code', monospace;
+  font-family: "Fira Code", monospace;
   font-size: 0.9rem;
 }
 
-b, strong {
+b,
+strong {
   font-weight: bold;
 }
 
@@ -233,7 +245,9 @@ b, strong {
       background-color: hsla(var(--background-200) / 0.75);
     }
 
-    &:active, &:focus, &:focus-within {
+    &:active,
+    &:focus,
+    &:focus-within {
       background-color: hsla(var(--background-200) / 1);
       border: 1px solid hsla(var(--primary-600) / 0.5);
       outline: none;
@@ -249,7 +263,6 @@ b, strong {
       margin: 0;
     }
   }
-
 }
 
 .tabs {
@@ -266,22 +279,23 @@ b, strong {
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: 1px solid hsla(var(--background-300) / 0);
-    background-color: hsla(var(--background-200) / 1);
+    background-color: hsla(var(--background-200) / 0.5);
     color: hsla(var(--text-950) / 1);
     transition: 0.2s;
 
-    &:focus-visible{
+    &:focus-visible {
       outline: none;
     }
 
-    &:hover, &:focus-visible{
-      background-color: hsla(var(--background-300) / 1);
-      border: 1px solid hsla(var(--background-500) / 1);
+    &:hover,
+    &:focus-visible {
+      background-color: hsla(var(--background-200) / 1);
+      border: 1px solid hsla(var(--background-400) / 1);
     }
 
-    &.is-active {
-      background-color: hsla(var(--background-300) / 1);
-      border: 1px solid hsla(var(--background-300) / 1);
+    &.active {
+      background-color: hsla(var(--background-200) / 1);
+      border: 2px solid hsla(var(--accent-200) / 1);
       font-weight: bolder;
     }
 
@@ -298,11 +312,15 @@ b, strong {
     padding: 0;
     background-color: transparent;
   }
-
 }
 
 .skeleton {
-  background: linear-gradient(90deg, hsl(var(--primary-100) / 0.5), hsl(var(--primary-400) / 0.5), hsl(var(--primary-100) / 0.5));
+  background: linear-gradient(
+    90deg,
+    hsl(var(--primary-100) / 0.5),
+    hsl(var(--primary-400) / 0.5),
+    hsl(var(--primary-100) / 0.5)
+  );
   background-size: 200% 100%;
   border: 1px solid transparent;
   padding: 0.5rem;
