@@ -1,33 +1,38 @@
 <script setup lang="ts">
-import {onMounted, onUnmounted, ref} from "vue";
-import { useUserStore } from "@/stores/userStore";
-import { useRouter } from "vue-router";
+import { onMounted, onUnmounted, ref } from 'vue'
+import { useUserStore } from '@/stores/userStore'
+import { useRouter } from 'vue-router'
 import ArrowDownBold from 'vue-material-design-icons/ArrowDownBold.vue'
 import ArrowUpBold from 'vue-material-design-icons/ArrowUpBold.vue'
 
-import type { Comment } from "@/types/discuitTypes";
-import {getProfilePicture, timeSince} from "@/lib/utils";
-import Markdown from "@/components/Markdown.vue";
-import {useUrlStore} from "@/stores/urlStore";
+import type { Comment } from '@/types/discuitTypes'
+import { getProfilePicture, timeSince } from '@/lib/utils'
+import Markdown from '@/components/Markdown.vue'
+import { useUrlStore } from '@/stores/urlStore'
 
-const userStore = useUserStore();
+const userStore = useUserStore()
 const urlStore = useUrlStore()
-const router = useRouter();
+const router = useRouter()
 
 const props = defineProps({
-	comment: {
+  comment: {
     type: Object as () => Comment,
-    required: true,
+    required: true
   },
   op: {
     type: String,
+    required: false
+  },
+  isMock: {
+    type: Boolean,
     required: false,
+    default: false
   }
-});
+})
 
-const timeElapsedHuman = timeSince(props.comment.createdAt);
-const humanReadableDate = new Date(props.comment.createdAt).toLocaleString();
-const comment = ref(props.comment);
+const timeElapsedHuman = timeSince(props.comment.createdAt)
+const humanReadableDate = new Date(props.comment.createdAt).toLocaleString()
+const comment = ref(props.comment)
 
 async function vote(upvote: boolean) {
   const vote = {
@@ -47,50 +52,80 @@ async function vote(upvote: boolean) {
 </script>
 
 <template>
-
-  <div class="embedded-comment" :class="{ 'is-op': comment.author?.id === op }"
-       :style="{ paddingBottom: comment.children?.length ? '0' : '0.5rem' }"
-       :id="`comment-${comment.id}`">
+  <div
+    class="embedded-comment"
+    :class="{ 'is-op': comment.author?.id === op }"
+    :style="{ paddingBottom: comment.children?.length ? '0' : '0.5rem' }"
+    :id="`comment-${comment.id}`"
+  >
     <div class="comment-header">
-      <RouterLink @click.stop @keydown.stop
-                  class="comment-user" :to="`/profile/${comment.author?.username}`"
+      <RouterLink
+        @click.stop
+        @keydown.stop
+        class="comment-user"
+        :to="`/profile/${comment.author?.username}`"
       >
-        <img class="comment-user-icon" :src="comment.author ? getProfilePicture(comment.author) : ''" alt="User avatar" />
-        <span class="comment-user-name">{{ comment.author?.username || "Hidden" }}</span>
+        <img
+          class="comment-user-icon"
+          :src="comment.author ? getProfilePicture(comment.author) : ''"
+          alt="User avatar"
+        />
+        <span class="comment-user-name">{{
+          comment.author?.username || "Hidden"
+        }}</span>
       </RouterLink>
-      <span class="comment-date" :title="humanReadableDate">{{ timeElapsedHuman }}</span>
+      <span class="comment-date" :title="humanReadableDate">{{
+        timeElapsedHuman
+      }}</span>
     </div>
     <div class="comment-body">
       <Markdown :markdown="comment.body" />
     </div>
 
-    <div class="comment-footer">
+    <div class="comment-footer" v-if="!isMock">
       <div class="votes footer-pill" @click.stop>
-        <button :class="{ 'votes__upvote': true, 'active': comment.userVotedUp }"
-                @click="vote(true)">
-          <arrow-up-bold/>
+        <button
+          :class="{ votes__upvote: true, active: comment.userVotedUp }"
+          @click="vote(true)"
+        >
+          <arrow-up-bold />
         </button>
-        <span class="votes__count">{{ comment.upvotes - comment.downvotes }}</span>
-        <button :class="{ 'votes__downvote': true, 'active': comment.userVoted && !comment.userVotedUp }"
-                @click="vote(false)">
-          <arrow-down-bold/>
+        <span class="votes__count">{{
+          comment.upvotes - comment.downvotes
+        }}</span>
+        <button
+          :class="{
+            votes__downvote: true,
+            active: comment.userVoted && !comment.userVotedUp,
+          }"
+          @click="vote(false)"
+        >
+          <arrow-down-bold />
         </button>
       </div>
       <div class="footer-section">
         <button class="footer-pill">Reply</button>
-        <button class="footer-pill" v-if="userStore.user?.id === comment.author?.id">Edit</button>
+        <button
+          class="footer-pill"
+          v-if="userStore.user?.id === comment.author?.id"
+        >
+          Edit
+        </button>
       </div>
     </div>
 
     <div class="comment-replies" v-if="comment.children?.length">
-      <EmbeddedComment v-for="reply in comment.children" :key="reply.id" :comment="reply" :op="op" />
+      <EmbeddedComment
+        v-for="reply in comment.children"
+        :key="reply.id"
+        :comment="reply"
+        :op="op"
+      />
     </div>
   </div>
-
 </template>
 
 <style scoped>
-
 .embedded-comment {
   display: flex;
   flex-direction: column;
@@ -192,7 +227,8 @@ async function vote(upvote: boolean) {
       font-weight: bold;
     }
 
-    .votes__upvote, .votes__downvote {
+    .votes__upvote,
+    .votes__downvote {
       padding: 0.25rem;
       border-radius: 0.5rem;
       background-color: hsl(var(--primary-200) / 1);
@@ -216,6 +252,4 @@ async function vote(upvote: boolean) {
   flex-direction: column;
   gap: 0.5rem;
 }
-
-
 </style>
