@@ -2,6 +2,10 @@
 
 A third-party client for [Discuit] built with Vue
 
+> [!WARNING]  
+> This repository has been archived. Vuecuit development, however, is continuing on Codeberg
+> [here](https://codeberg.org/ttaylor/vuecuit)
+
 ## Platform support
 
 Vuecuit is web-first, mobile-optimised and designed to work on all modern browsers.
